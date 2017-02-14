@@ -16,7 +16,7 @@ public class scr_player_movement : MonoBehaviour {
 
 	void Start () {
 		rbody = GetComponent<Rigidbody2D> ();
-		float currentMoveSpeed = moveSpeed;
+		currentMoveSpeed = moveSpeed;
 	}
 
 	void Update(){
@@ -33,6 +33,7 @@ public class scr_player_movement : MonoBehaviour {
 
 		moveVec = transform.up * inputY * currentMoveSpeed // Forward and backward movement
 			+ transform.right * inputX * currentMoveSpeed; // Left and right movement
+		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);// The all important background Z-space layer movement experiment.
 	}
 
 	// FixedUpdate is called once per *PHYSICS* frame, at a fixed framerate. (Fixed frame is run at it's own framerate, indepedent of the visual framerate and sound framerate)
