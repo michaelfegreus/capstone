@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour {
+public class scr_inventory : MonoBehaviour {
+
+	GameObject[] items;
 
 	// Use this for initialization
 	void Start () {
