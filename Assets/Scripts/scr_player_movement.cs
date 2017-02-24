@@ -14,17 +14,27 @@ public class scr_player_movement : MonoBehaviour {
 
 	Vector3 moveVec; // tracks rigidbody movement
 
-	// Test item
-	public GameObject item;
+	// Inventory management objects
+	public GameObject inventory;
+	scr_inventory inventoryScript;
+	public GameObject toolInventory;
+	scr_inventory_tool toolInventoryScript;
 
 	public Camera mainCamera; // Holds the main camera. This allows the player script to tell it when to move.
+
+	bool pickUp = false;
 
 	void Start () {
 		rbody = GetComponent<Rigidbody2D> ();
 		currentMoveSpeed = moveSpeed;
+		// Gets inventory script for ease of use
+		inventoryScript = inventory.GetComponent<scr_inventory> ();
+		toolInventoryScript = toolInventory.GetComponent<scr_inventory_tool> ();
 	}
 
 	void Update(){
+
+		// Directional Movement Controls
 
 		inputX = Input.GetAxis ("Horizontal"); // A/D, LeftArrow/RightArrow
 		inputY = Input.GetAxis ("Vertical"); // W/S, UpArrow/DownArrow
@@ -39,25 +49,53 @@ public class scr_player_movement : MonoBehaviour {
 			+ transform.right * inputX * currentMoveSpeed; // Left and right movement
 		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);// The all important background Z-space layer movement experiment.
 	
+		// Resets picking up
+		pickUp = false;
+
+		if (Input.GetKeyDown (KeyCode.G)) {
+			if (inventoryScript.CheckFull() == false) {
+				pickUp = true;
+			}
+		}
+
 		// Test placing items
-		if (Input.GetKeyDown (KeyCode.X)) {
-			Instantiate (item, this.transform.position, Quaternion.identity);
+		if (Input.GetKeyDown (KeyCode.H)) {
+			inventoryScript.PlaceItem();
+		}
+
+		// Test using items
+		if (Input.GetKeyDown (KeyCode.J)) {
+			inventoryScript.UseItem();
 		}
 	}
 
 	// FixedUpdate is called once per *PHYSICS* frame, at a fixed framerate. (Fixed frame is run at it's own framerate, indepedent of the visual framerate and sound framerate)
 	void FixedUpdate () {
-		
+		// Movement actually executes in Fixed Update, as it is a physics-based operation.
 		rbody.velocity = moveVec;
-			//+ Physics.gravity; // Always apply gravity
-
-		// Instead of using transform.position / transform.translate (basically teleportation), we're giving the rbody velocity to push it along organically.
-		// This allows the player .to strafe. By the way, transform.left doesn't exist, so use transform.left and multiply it by -1
 	}
 
 	public void Warp(Vector3 warpVec, Vector3 cameraVec){
 		transform.position = warpVec;
 		mainCamera.transform.position = cameraVec;
-		Debug.Log ("Warped");
+		//Debug.Log ("Warped");
+	}
+	void OnTriggerStay2D(Collider2D col){
+		if (col.tag == ("Item")) {
+			if (pickUp) {
+				int itemID = col.gameObject.GetComponent<scr_item_ID> ().GetItemID ();
+				inventoryScript.AddItem (itemID);
+				Destroy (col.gameObject);
+				pickUp = false;
+			}
+		}
+		if (col.tag == ("ToolItem")) {
+			if (pickUp) {
+				int itemID = col.gameObject.GetComponent<scr_item_ID> ().GetItemID ();
+				inventoryScript.AddItem (itemID);
+				Destroy (col.gameObject);
+				pickUp = false;
+			}
+		}
 	}
 }
