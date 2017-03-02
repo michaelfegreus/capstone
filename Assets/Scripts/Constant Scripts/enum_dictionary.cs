@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class enum_dictionary {
 
-	public enum Items : int
+	/*public enum Items : int
 	{
 		Empty,
 		TestItem
@@ -14,5 +14,5 @@ public class enum_dictionary {
 		Empty,
 		WateringCan,
 		Shovel
-	}
+	}*/
 }
