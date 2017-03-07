@@ -27,6 +27,8 @@ public class scr_player_movement : MonoBehaviour {
 		inputX = Input.GetAxis ("Horizontal"); // A/D, LeftArrow/RightArrow
 		inputY = Input.GetAxis ("Vertical"); // W/S, UpArrow/DownArrow
 
+
+
 		if (inputX != 0 && inputY != 0) {
 			currentMoveSpeed = moveSpeed * .8f;
 		} else {
