@@ -7,7 +7,7 @@ public class scr_warp_point : MonoBehaviour {
 	// Where the player will go.
 	public Transform destinationWarp;
 	// Where the camera will go.
-	public Transform cameraPlacement;
+	public Vector3 cameraPlacement;
 
 	GameObject thePlayer;
 
@@ -15,7 +15,7 @@ public class scr_warp_point : MonoBehaviour {
 		if (col.tag == ("Player")) {
 			thePlayer = col.gameObject;
 			// Warps player to a destination empty object transform
-			thePlayer.GetComponent<scr_player_movement> ().Warp (destinationWarp.position, cameraPlacement.position);
+			thePlayer.GetComponent<scr_player_movement> ().Warp (destinationWarp.position, cameraPlacement);
 		}
 	}
 }

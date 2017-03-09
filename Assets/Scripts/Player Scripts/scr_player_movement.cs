@@ -27,8 +27,6 @@ public class scr_player_movement : MonoBehaviour {
 		inputX = Input.GetAxis ("Horizontal"); // A/D, LeftArrow/RightArrow
 		inputY = Input.GetAxis ("Vertical"); // W/S, UpArrow/DownArrow
 
-
-
 		if (inputX != 0 && inputY != 0) {
 			currentMoveSpeed = moveSpeed * .8f;
 		} else {
@@ -38,7 +36,8 @@ public class scr_player_movement : MonoBehaviour {
 		moveVec = transform.up * inputY * currentMoveSpeed // Forward and backward movement
 			+ transform.right * inputX * currentMoveSpeed; // Left and right movement
 		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);// The all important background Z-space layer movement experiment.
-	
+
+		//transform.localScale = new Vector3 (transform.position.y, transform.position.y, transform.position.y);
 	}
 
 	// FixedUpdate is called once per *PHYSICS* frame, at a fixed framerate. (Fixed frame is run at it's own framerate, indepedent of the visual framerate and sound framerate)
