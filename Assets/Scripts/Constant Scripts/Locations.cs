@@ -8,5 +8,5 @@ public class Locations : MonoBehaviour {
 	public const int GENERAL = 0;
 	public const int SOIL = 1;
 	public const int TOOLSHED = 2;
-
+	public const int WATER = 3;
 }

@@ -4,14 +4,36 @@ using UnityEngine;
 
 public class scr_tool_manager : MonoBehaviour {
 
-	public GameObject scythe;
+	// To get general info about what the player's doing
+	public GameObject playerManager;
+	scr_player_manager playerManagerScript;
 
-	float inputX;
-	float inputY;
+	// ID for the tool being used.
+	int currentTool;
+	//ID for the current location. Tools can change depending on the context, like the watering can fills up if you're standing by water.
+	int currentLocation;
+
+	public GameObject scythe;
 
 	bool usingTool = false;
 
-	IEnumerator scytheRoutine(){
+	int wateringCanLevel = 0;
+
+	void Start(){
+		playerManagerScript = playerManager.GetComponent<scr_player_manager> ();
+	}
+
+	void WateringCanRoutine(){
+		// If by water, fill up watering can. Otherwise, drop the value of watering can uses by one.
+		if (currentLocation == Locations.WATER) {
+			wateringCanLevel = 3;
+		} else {
+			wateringCanLevel--;
+		}
+		Debug.Log ("Watering Can level: " + wateringCanLevel);
+	}
+
+	IEnumerator ScytheRoutine(){
 
 		// To prevent using the tool too fast.
 		usingTool = true;
@@ -33,17 +55,26 @@ public class scr_tool_manager : MonoBehaviour {
 
 	void Update () {
 
-		/*inputX = Input.GetAxis ("Horizontal"); // A/D, LeftArrow/RightArrow
-		inputY = Input.GetAxis ("Vertical"); // W/S, UpArrow/DownArrow
-
-		if (inputX != 0 && inputY != 0) {
-			currentMoveSpeed = moveSpeed * .8f;
-		} else {
-			currentMoveSpeed = moveSpeed;
-		}*/
-
 		if (Input.GetKeyDown (KeyCode.T) && !usingTool) {
-			StartCoroutine (scytheRoutine ());
+
+			// Checks the current tools and location context.
+			currentTool = playerManagerScript.currentTool;
+			currentLocation = playerManagerScript.contextLocation;
+
+			switch (currentTool) {
+
+			case Items.SCYTHE:
+				StartCoroutine (ScytheRoutine ());
+				break;
+
+			case Items.WATERING_CAN:
+				WateringCanRoutine ();
+				break;
+			
+			default:
+				Debug.Log ("No tool held");
+				break;
+			}
 		}
 	}
 }

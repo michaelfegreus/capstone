@@ -23,6 +23,9 @@ public class scr_inventory : MonoBehaviour {
 	public GameObject itemEncyclopedia;
 	scr_item_encyclopedia itemEncyclopediaScript;
 
+	// To interact with the tool manager when tools are engaged with.
+	scr_player_manager playerManagerScript;
+
 	// To check if an item is being picked up.
 	bool pickUp = false;
 
@@ -30,7 +33,7 @@ public class scr_inventory : MonoBehaviour {
 		inventoryBarUIScript = inventoryBarUI.GetComponent<scr_inventory_ui> ();
 		toolInventoryBarUIScript = toolInventoryBarUI.GetComponent<scr_inventory_tool_ui> ();
 		itemEncyclopediaScript = itemEncyclopedia.GetComponent<scr_item_encyclopedia> ();
-		Debug.Log ("Cursor Index: " + cursorIndex);
+		playerManagerScript = this.GetComponent<scr_player_manager> ();
 	}
 
 	public bool CheckFull(){
@@ -68,6 +71,7 @@ public class scr_inventory : MonoBehaviour {
 		currentTool = itemID;
 		Sprite imageSpriteToAdd = itemEncyclopediaScript.GetToolSprite(itemID);
 		toolInventoryBarUIScript.AddToolImage (imageSpriteToAdd);
+		playerManagerScript.SetCurrentTool (currentTool);
 	}
 
 	public void PlaceItem(){
@@ -88,9 +92,11 @@ public class scr_inventory : MonoBehaviour {
 	public void UseItem(){
 		// Grabs item at cursor index
 		int itemIndex = cursorIndex;
-		if (helditemIDs [itemIndex] != 0) { // If it's not empty
+		// The item ID of the item at the cursor index
+		int usedItemID = helditemIDs[itemIndex];
+		if (usedItemID != 0) { // If it's not empty
 			//Instantiate game object at the slot from items[itemIndex] (which is the item ID)
-			Debug.Log(helditemIDs[itemIndex]);
+			Debug.Log("Using item with ID: " + usedItemID);
 			//GameObject usedItem = Instantiate (itemPrefabs[helditemIDs[itemIndex]], this.transform.position + new Vector3 (0f, -.5f, -.5f)/*places at player's feet*/, Quaternion.identity);
 			//usedItem.GetComponent<SpriteRenderer> ().enabled = false;
 			//usedItem.GetComponent<Collider2D> ().enabled = false;
@@ -98,8 +104,9 @@ public class scr_inventory : MonoBehaviour {
 			//Destroy (usedItem);
 			// Gets the Inventory bar to remove the sprite from the UI.
 			inventoryBarUIScript.RemoveItemImage (itemIndex, helditemIDs [itemIndex]);
-
+			itemUseFunctions (usedItemID);
 			//player.UseItem(helditems[itemIndex]);
+
 		}
 		helditemIDs [itemIndex] = 0;
 	}
@@ -171,6 +178,17 @@ public class scr_inventory : MonoBehaviour {
 				Destroy (col.gameObject);
 				pickUp = false;
 			}
+		}
+	}
+
+	void itemUseFunctions(int itemID){
+		switch (itemID) {
+		case Items.TEST_ITEM:
+			Debug.Log ("Used the test item switch case.");
+			break;
+		case Items.GIANT_SEED:
+			Debug.Log ("Used the test item switch case. This should plant a giant seed.");
+			break;
 		}
 	}
 }
