@@ -5,7 +5,6 @@ using UnityEngine;
 public class scr_tool_manager : MonoBehaviour {
 
 	// To get general info about what the player's doing
-	public GameObject playerManager;
 	scr_player_manager playerManagerScript;
 
 	// ID for the tool being used.
@@ -20,7 +19,7 @@ public class scr_tool_manager : MonoBehaviour {
 	int wateringCanLevel = 0;
 
 	void Start(){
-		playerManagerScript = playerManager.GetComponent<scr_player_manager> ();
+		playerManagerScript = GetComponent<scr_player_manager> ();
 	}
 
 	void WateringCanRoutine(){

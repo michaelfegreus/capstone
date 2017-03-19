@@ -15,26 +15,25 @@ public class scr_player_manager : MonoBehaviour {
 	scr_player_movement movementScript;
 
 	// To interact with the tool manager when tools are engaged with.
-	public GameObject toolManager;
 	scr_tool_manager toolManagerScript;
 
 	void Start(){
 		inventoryScript = GetComponent<scr_inventory> ();
 		movementScript = GetComponent<scr_player_movement> ();
-		toolManagerScript = toolManager.GetComponent<scr_tool_manager> ();
+		toolManagerScript = GetComponent<scr_tool_manager> ();
 	}
 
 	void OnTriggerEnter2D(Collider2D col){
 		if (col.tag == ("ContextSensitive")) {
 			contextLocation = col.GetComponent<scr_contextsensitive_location> ().GetLocationID ();
-			Debug.Log (contextLocation);
+			//Debug.Log ("Current area: " + contextLocation);
 		}
 	}
 	void OnTriggerExit2D(Collider2D col){
 		if (col.tag == ("ContextSensitive")) {
 			contextLocation = Locations.GENERAL;
+			//Debug.Log ("Current area: " + contextLocation);
 		}
-		Debug.Log (contextLocation);
 	}
 
 	// To keep track of what tool is being used for use, animation, etc.
