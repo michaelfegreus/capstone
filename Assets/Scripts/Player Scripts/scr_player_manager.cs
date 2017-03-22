@@ -8,7 +8,7 @@ public class scr_player_manager : MonoBehaviour {
 	[HideInInspector] public int contextLocation = Locations.GENERAL;
 
 	// Keeps track of what tool is being held by the player.
-	public int currentTool;
+	[HideInInspector] public int currentTool;
 
 	// To manage other scripts from player
 	scr_inventory inventoryScript;
