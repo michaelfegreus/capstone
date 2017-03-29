@@ -10,7 +10,7 @@ public class scr_tool_manager : MonoBehaviour {
 	// ID for the tool being used.
 	int currentTool;
 	//ID for the current location. Tools can change depending on the context, like the watering can fills up if you're standing by water.
-	int currentLocation;
+	int currentTrigger;
 
 	public GameObject scythe;
 
@@ -24,7 +24,7 @@ public class scr_tool_manager : MonoBehaviour {
 
 	void WateringCanRoutine(){
 		// If by water, fill up watering can. Otherwise, drop the value of watering can uses by one.
-		if (currentLocation == Locations.WATER) {
+		if (currentTrigger == Triggers.WATER) {
 			wateringCanLevel = 3;
 		} else {
 			wateringCanLevel--;
@@ -58,7 +58,7 @@ public class scr_tool_manager : MonoBehaviour {
 
 			// Checks the current tools and location context.
 			currentTool = playerManagerScript.currentTool;
-			currentLocation = playerManagerScript.contextLocation;
+			currentTrigger = playerManagerScript.trigger;
 
 			switch (currentTool) {
 
