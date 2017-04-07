@@ -32,7 +32,7 @@ public class scr_player_movement : MonoBehaviour {
 		} else {
 			currentMoveSpeed = moveSpeed;
 		}
-
+			
 		moveVec = transform.up * inputY * currentMoveSpeed // Forward and backward movement
 			+ transform.right * inputX * currentMoveSpeed; // Left and right movement
 		transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);// The all important background Z-space layer movement experiment.
@@ -44,12 +44,5 @@ public class scr_player_movement : MonoBehaviour {
 	void FixedUpdate () {
 		// Movement actually executes in Fixed Update, as it is a physics-based operation.
 		rbody.velocity = moveVec;
-	}
-
-	public void Warp(Vector3 warpVec, Vector3 cameraVec){
-		// For screen transitions.
-		transform.position = warpVec;
-		mainCamera.transform.position = cameraVec;
-		//Debug.Log ("Warped");
 	}
 }

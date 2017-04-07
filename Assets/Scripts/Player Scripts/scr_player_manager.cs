@@ -34,7 +34,7 @@ public class scr_player_manager : MonoBehaviour {
 		contextSensitiveInputScript = GetComponent<scr_contextsensitive_input> ();
 		gameManagerScript = GetComponent<scr_game_manager> ();
 		// Component on different object.
-		textBoxManagerScript = textBoxManager.GetComponent<scr_textbox_manager> ();
+		//textBoxManagerScript = textBoxManager.GetComponent<scr_textbox_manager> ();
 	}
 
 	void OnTriggerEnter2D(Collider2D col){
@@ -71,5 +71,11 @@ public class scr_player_manager : MonoBehaviour {
 	// To keep track of what tool is being used for use, animation, etc.
 	public void SetCurrentTool(int newCurrentTool){
 		currentTool = newCurrentTool;
+	}
+
+	public void Warp(Vector3 warpVec){
+		// For screen transitions.
+		transform.position = warpVec;
+		//Debug.Log ("Warped");
 	}
 }

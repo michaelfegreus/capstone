@@ -38,15 +38,26 @@ public class scr_player_movement_3d : MonoBehaviour {
 
 		inputX = Input.GetAxis ("Horizontal"); // A/D, LeftArrow/RightArrow
 		inputY = Input.GetAxis ("Vertical"); // W/S, UpArrow/DownArrow
-			
+
+		Vector3 forward = mainCamera.transform.forward;
+		Vector3 right = mainCamera.transform.right;
+
 		if (inputX != 0 && inputY != 0) {
 			currentMoveSpeed = moveSpeed * .8f;
 		} else {
 			currentMoveSpeed = moveSpeed;
 		}
 
-		moveVec = transform.forward * inputY * currentMoveSpeed // Forward and backward movement
-			+ transform.right * inputX * currentMoveSpeed // Left and right movement
+		forward.y = 0f;
+		right.y = 0f;
+		forward.Normalize ();
+		right.Normalize ();
+
+		Vector3 desiredMoveDirection = forward * inputY + right * inputX;
+
+
+		moveVec = forward * inputY * currentMoveSpeed // Forward and backward movement
+			+ right * inputX * currentMoveSpeed // Left and right movement
 			+ Physics.gravity; // Always apply gravity.
 		//transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.y);// The all important background Z-space layer movement experiment.
 
