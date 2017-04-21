@@ -111,4 +111,8 @@ public class scr_player_movement_3d : MonoBehaviour {
 		mainCamera.transform.position = cameraVec;
 		//Debug.Log ("Warped");
 	}
+
+	public void ChangeMainCamera(Camera newMainCamera){
+		mainCamera = newMainCamera;
+	}
 }

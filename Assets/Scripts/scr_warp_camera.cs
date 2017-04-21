@@ -4,13 +4,26 @@ using UnityEngine;
 
 public class scr_warp_camera : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	// If switching actual cameras.
+	public Camera myCam;
+	public Camera newCam;
+
+	GameObject thePlayer;
+
+	void OnTriggerEnter(Collider col){
+		if (col.tag == ("Player")) {
+			thePlayer = col.gameObject;
+
+			if (myCam.enabled == true) {
+				myCam.enabled = false;
+				newCam.enabled = true;
+				thePlayer.GetComponent<scr_player_movement_3d> ().ChangeMainCamera (newCam);
+			} else {
+				newCam.enabled = false;
+				myCam.enabled = true;
+				thePlayer.GetComponent<scr_player_movement_3d> ().ChangeMainCamera (myCam);
+			}
+			Debug.Log ("Stuff");
+		}
 	}
 }
