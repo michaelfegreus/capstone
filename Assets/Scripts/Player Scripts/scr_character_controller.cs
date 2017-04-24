@@ -44,7 +44,7 @@ public class scr_character_controller : MonoBehaviour {
 
 		// if player presses space bar...
 		// then cController.Move upwards
-		if ( Input.GetKeyDown(KeyCode.Space) ) {
+		if ( Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown (KeyCode.Joystick1Button2) ) {
 			jumpTimer = Time.time + jumpHeight;
 		}
 
@@ -63,7 +63,7 @@ public class scr_character_controller : MonoBehaviour {
 */
 
 		Vector3 movement = new Vector3(inputX, 0.0f, inputY);
-		if (inputX < -.1f || inputX > .1f || inputY > .1f || inputY < -.1f) {
+		if (inputX < -.001f || inputX > .001f || inputY > .001f || inputY < -.001f) {
 			transform.rotation = Quaternion.LookRotation (movement);
 		}
 
