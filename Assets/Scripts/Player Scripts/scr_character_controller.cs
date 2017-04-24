@@ -12,11 +12,16 @@ public class scr_character_controller : MonoBehaviour {
 	CharacterController cController;
 	float jumpTimer;
 
-	public float moveSpeed;
+	public float baseMoveSpeed;
+	float moveSpeed;
+	public float jumpHeight;
+
+	public Camera mainCam;
 
 	// Use this for initialization
 	void Start () {
 		cController = GetComponent<CharacterController>();
+		moveSpeed = baseMoveSpeed;
 	}
 
 	// Update is called once per frame
@@ -26,6 +31,13 @@ public class scr_character_controller : MonoBehaviour {
 		inputY = Input.GetAxis("Vertical");
 		mouseX = Input.GetAxis("Mouse X");
 
+		// Temporary run controls
+		if (Input.GetKeyDown (KeyCode.Joystick1Button1)) {
+			moveSpeed = baseMoveSpeed *2;
+		}
+		if (Input.GetKeyUp (KeyCode.Joystick1Button1)) {
+			moveSpeed = baseMoveSpeed;
+		}
 
 		// actually turn the player capsule now
 		//transform.Rotate(0f, mouseX * 5f, 0f );
@@ -33,12 +45,22 @@ public class scr_character_controller : MonoBehaviour {
 		// if player presses space bar...
 		// then cController.Move upwards
 		if ( Input.GetKeyDown(KeyCode.Space) ) {
-			jumpTimer = Time.time + 0.5f;
+			jumpTimer = Time.time + jumpHeight;
 		}
 
 		if ( Time.time < jumpTimer ) {
-			cController.Move( new Vector3(0f, 0.1f, 0f) );
+			cController.Move( new Vector3(0f, jumpHeight, 0f) );
 		}
+
+
+		/*	Vector3 forward = mainCam.transform.forward;
+			Vector3 right = mainCam.transform.right;
+
+			forward.y = 0f;
+			right.y = 0f;
+			forward.Normalize ();
+			right.Normalize ();
+*/
 
 		Vector3 movement = new Vector3(inputX, 0.0f, inputY);
 		if (inputX < -.1f || inputX > .1f || inputY > .1f || inputY < -.1f) {
