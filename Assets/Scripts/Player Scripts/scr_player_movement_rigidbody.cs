@@ -53,7 +53,7 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			rb.drag = groundDrag;
 			transform.position = new Vector3 (transform.position.x, hit.point.y + heightAdjust, transform.position.z);
 			// Ground drag back on
-			Debug.Log("On Ground reset accessed");
+			//Debug.Log("On Ground reset accessed");
 		} else if (Vector3.Distance (transform.position, hit.point) > heightAdjust + 0.05f) {
 			rb.drag = airDrag;
 			onGround = false;
@@ -74,7 +74,7 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			}
 		}
 
-		Debug.Log ("Grounded : " + onGround);
+		//Debug.Log ("Grounded : " + onGround);
 
 	}
 
