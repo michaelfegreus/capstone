@@ -159,7 +159,7 @@ public class scr_inventory : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D(Collider2D col){
-		if (col.tag == ("Item")) {
+		if (col.tag.Trim().Equals("Item".Trim())){// == ("Item")) {
 			if (pickUp) {
 				int itemID = col.gameObject.GetComponent<scr_item_ID> ().GetItemID ();
 				AddItem (itemID);

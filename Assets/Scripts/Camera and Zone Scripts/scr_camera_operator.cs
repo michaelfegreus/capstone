@@ -5,18 +5,25 @@ using UnityEngine;
 public class scr_camera_operator : MonoBehaviour {
 
 	Camera currentCam;
+	GameObject currentBG;
 
 	public GameObject thePlayer;
 
-	public void SetNewCamera(Camera newCam){
+	public void SetNewCamera(Camera newCam, GameObject newBG){
 		Camera oldCam = currentCam;
+		GameObject oldBG = currentBG;
 
 		if (oldCam != null) {
 			oldCam.enabled = false;
 		}
+		if (oldBG != null) {
+			oldBG.SetActive (false);
+		}
 		newCam.enabled = true;
+		newBG.SetActive (true);
 
 		currentCam = newCam;
+		currentBG = newBG;
 
 
 

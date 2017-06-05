@@ -8,6 +8,7 @@ public class scr_warp_point_3d : MonoBehaviour {
 	public Transform destinationWarp;
 	// If switching actual cameras.
 	public Camera newCam;
+	public GameObject myBG;
 
 	GameObject thePlayer;
 
@@ -25,7 +26,7 @@ public class scr_warp_point_3d : MonoBehaviour {
 			thePlayer.GetComponent<scr_player_manager> ().Warp (destinationWarp.position);
 
 			// Swap the camera
-			cameraOpScript.SetNewCamera (newCam);
+			cameraOpScript.SetNewCamera (newCam, myBG);
 		}
 	}
 }

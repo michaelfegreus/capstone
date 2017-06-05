@@ -6,6 +6,7 @@ public class scr_warp_camera : MonoBehaviour {
 
 	// If switching actual cameras.
 	public Camera myCam;
+	public GameObject myBG;
 	//public Camera newCam;
 
 	GameObject thePlayer;
@@ -22,7 +23,7 @@ public class scr_warp_camera : MonoBehaviour {
 			
 			thePlayer = col.gameObject;
 
-			cameraOpScript.SetNewCamera (myCam);
+			cameraOpScript.SetNewCamera (myCam, myBG);
 
 			thePlayer.GetComponent<scr_character_controller> ().mainCam = myCam;
 

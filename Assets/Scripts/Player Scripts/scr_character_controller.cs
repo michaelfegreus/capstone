@@ -44,13 +44,13 @@ public class scr_character_controller : MonoBehaviour {
 
 		// if player presses space bar...
 		// then cController.Move upwards
-		if ( Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown (KeyCode.Joystick1Button2) ) {
+		/*if ( Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown (KeyCode.Joystick1Button2) ) {
 			jumpTimer = Time.time + jumpHeight;
 		}
 
 		if ( Time.time < jumpTimer ) {
 			cController.Move( new Vector3(0f, jumpHeight, 0f) );
-		}
+		}*/
 
 
 		/*	Vector3 forward = mainCam.transform.forward;
