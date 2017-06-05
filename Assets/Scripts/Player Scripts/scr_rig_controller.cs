@@ -9,11 +9,15 @@ public class scr_rig_controller : MonoBehaviour {
 	float inputX;
 	float inputY;
 
+	// *** Try doubling the speed of the walk as a temporary fix. Delete this later.
+	public float runAnimationPatchSpeed;
+
 	//bool running = false;
 
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
+
 	}
 
 	// Update is called once per frame
@@ -23,9 +27,13 @@ public class scr_rig_controller : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Joystick1Button1)) {
 			//running = true;
 			anim.SetBool ("running", true);
+			// *** Try doubling the speed of the walk as a temporary fix. Delete this later.
+			anim.speed = runAnimationPatchSpeed;
 		}
 		if (Input.GetKeyUp (KeyCode.Joystick1Button1)) {
 			anim.SetBool ("running", false);
+			// *** Try doubling the speed of the walk as a temporary fix. Delete this later.
+			anim.speed = 1.0f;
 		}
 
 		inputX = Input.GetAxis("Horizontal");

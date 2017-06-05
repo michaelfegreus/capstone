@@ -44,8 +44,6 @@ public class scr_player_inventory : MonoBehaviour {
 		// Resets picking up
 		pickUp = false;
 
-		Items.GIANT_SEED;
-
 		if (Input.GetKeyDown (KeyCode.JoystickButton2)) {
 			if (CheckFull() == false) {
 				pickUp = true;
