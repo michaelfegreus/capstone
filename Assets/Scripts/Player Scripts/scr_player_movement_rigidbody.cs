@@ -12,13 +12,14 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 	public float groundDrag;
 	public float airDrag;
 
+	public bool jump;
+
 	public float heightAdjust;
+
+	public bool inMenu = false;
 
 	float inputX = 0f;
 	float inputY = 0f;
-
-	bool canMove = true;
-	bool onGround = true;
 
 	RaycastHit hit;
 
@@ -26,15 +27,18 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 
 	Rigidbody rb;
 
-	// Use this for initialization
+	bool onGround = true;
+
+	private delegate void StateMachine();
+	private StateMachine stateMachine;
+
 	void Start () {
 		moveSpeed = baseMoveSpeed;
 		rb = GetComponent<Rigidbody> ();
 		rb.drag = groundDrag;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	void WalkControls(){
 		// see RigidbodyControl.cs for full info on these input axes
 		inputX = Input.GetAxis("Horizontal");
 		inputY = Input.GetAxis("Vertical");
@@ -46,6 +50,14 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 		if (Input.GetKeyUp (KeyCode.Joystick1Button1)) {
 			moveSpeed = baseMoveSpeed;
 		}
+	}
+	void JumpControls(){ if(Input.GetKeyDown (KeyCode.Joystick1Button0)){ jump = true; } }
+
+	void Update () {
+
+		if (stateMachine != null) { stateMachine; }
+
+		if (!inMenu) { stateMachine = WalkControls; stateMachine += JumpControls; }
 
 		// Checks to see if you're on the ground and not falling currently.
 		if (rb.velocity.y < 0.05f && Vector3.Distance (transform.position, hit.point) <= heightAdjust) {
@@ -59,7 +71,7 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			onGround = false;
 		}
 
-		if (onGround && canMove) {
+		if (onGround) {
 			movement = new Vector3 (inputX, 0.0f, inputY);
 			if (inputX < -.001f || inputX > .001f || inputY > .001f || inputY < -.001f) {
 				transform.rotation = Quaternion.LookRotation (movement);
@@ -75,7 +87,6 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 		}
 
 		//Debug.Log ("Grounded : " + onGround);
-
 	}
 
 
@@ -86,14 +97,17 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			// Sets you to heightAdjust's distance above the ground.
 		}
 
-		if (onGround && canMove) {
+		if (onGround) {
 			// Move input that pushes the character forward towards the direction faced
 			if (inputX < -.001f || inputX > .001f || inputY > .001f || inputY < -.001f) {
 				rb.AddForce (transform.forward * moveSpeed, ForceMode.Impulse);
 			}
 
 			// Jump input
-			if (Input.GetKeyDown (KeyCode.Joystick1Button0)) {
+			if(jump) {
+				
+				jump = false;
+
 				rb.drag = airDrag;
 				rb.AddForce (transform.up * jumpForce, ForceMode.Impulse);
 				onGround = false;
@@ -103,7 +117,6 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 
 		// Always apply significant gravity
 		rb.AddForce (-transform.up * myGravity, ForceMode.Impulse);
-
 
 		//Debug.Log (hit.point);
 		Debug.DrawLine(transform.position, hit.point, Color.red);

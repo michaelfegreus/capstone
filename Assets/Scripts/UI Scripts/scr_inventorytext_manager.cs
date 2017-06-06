@@ -6,14 +6,28 @@ using UnityEngine.UI;
 public class scr_inventorytext_manager : MonoBehaviour {
 
 	public Text[] itemTextArray;
+	public int[] inventoryItemsID;
 
-	// This is accessed by scr_player_inventory component on the player.
-	// At a slot specified by the player inventory script, a new string of text is set.
-	public void SetText(int arraySlot, int itemID){
-		// For now, I'm just converting the item ID to a string to demo this functionality.
-		// Later, you're going to want to make it the name of the item.
-		itemTextArray [arraySlot].text = itemID.ToString();
-		Debug.Log ("Accessed. Item ID: " + itemID);
-		Debug.Log ("Notice me");
+	// Sets up the item array to match the inventory's array.
+	// Try this for now. If later you don't want to have two arrays holding the same data, just pass information directly into the text slot from the inventory.
+	public void SetItemArray(int inventorySize){
+		inventoryItemsID = new int[inventorySize];
+	}
+
+	// Refreshes the items in this UI for when the menu opens.
+	public void UpdateItemArray(int arraySlot, int newItemID){
+		inventoryItemsID [arraySlot] = newItemID;
+	}
+
+	// Sets and refreshes what is in the actual text boxes.
+	public void UpdateMenuSlots(){
+		for (int i = 0; i < itemTextArray.Length; i++) {
+			if (inventoryItemsID [i] == 0) {
+				itemTextArray [i].text = "Empty";
+			} else {
+				// For now, just shows item IDs.
+				itemTextArray [i].text = inventoryItemsID [i].ToString ();
+			}
+		}
 	}
 }

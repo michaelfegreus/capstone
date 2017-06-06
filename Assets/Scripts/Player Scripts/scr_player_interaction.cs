@@ -17,10 +17,16 @@ public class scr_player_interaction : MonoBehaviour {
 	// To deal with inventory when the player interacts with items
 	scr_player_inventory inventoryScript;
 
+	// State change booleans. Public is enabled so that the manager can toggle them.
+	public bool canInteract = true;
+
+	// Interact with Player Manager
+	scr_player_MANAGER managerScript;
 
 	// Use this for initialization
 	void Start () {
 		inventoryScript = GetComponent<scr_player_inventory> ();
+		managerScript = GetComponent<scr_player_MANAGER> ();
 		nearbyInteractables = new GameObject[5];
 	}
 	
@@ -28,7 +34,7 @@ public class scr_player_interaction : MonoBehaviour {
 	void Update () {
 
 		// Interact button.
-		if (Input.GetKeyDown (KeyCode.JoystickButton2)) {
+		if (Input.GetKeyDown (KeyCode.JoystickButton2) && canInteract) {
 
 			// Check through the array of interactables objects. Interact with the closest one.
 			int nearestObjectIndex = -1; // Setting values because Unity asking that they not be empty.
