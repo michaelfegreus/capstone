@@ -12,7 +12,7 @@ public class scr_player_manager : MonoBehaviour {
 
 	// Overall GameManager interaction
 	public GameObject gameManager;
-	scr_game_manager gameManagerScript;
+	//scr_game_manager gameManagerScript;
 
 	// To manage other scripts from player
 	scr_inventory inventoryScript;
@@ -32,7 +32,7 @@ public class scr_player_manager : MonoBehaviour {
 		movementScript = GetComponent<scr_player_movement> ();
 		toolManagerScript = GetComponent<scr_tool_manager> ();
 		contextSensitiveInputScript = GetComponent<scr_contextsensitive_input> ();
-		gameManagerScript = GetComponent<scr_game_manager> ();
+		//gameManagerScript = GetComponent<scr_game_manager> ();
 		// Component on different object.
 		//textBoxManagerScript = textBoxManager.GetComponent<scr_textbox_manager> ();
 	}
@@ -46,7 +46,7 @@ public class scr_player_manager : MonoBehaviour {
 			if (trigger == Triggers.SIGNBOARD) {
 				string textToLoad = col.gameObject.GetComponent<scr_signboard> ().signText;
 				Debug.Log (textToLoad);
-				textBoxManagerScript.SetNewString (textToLoad);
+				//textBoxManagerScript.SetNewString (textToLoad);
 			}
 		}
 	}

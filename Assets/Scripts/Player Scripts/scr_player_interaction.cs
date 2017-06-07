@@ -17,16 +17,16 @@ public class scr_player_interaction : MonoBehaviour {
 	// To deal with inventory when the player interacts with items
 	scr_player_inventory inventoryScript;
 
-	// State change booleans. Public is enabled so that the manager can toggle them.
-	public bool canInteract = true;
-
 	// Interact with Player Manager
 	scr_player_MANAGER managerScript;
+
+	public bool inDialogue;
 
 	// Use this for initialization
 	void Start () {
 		inventoryScript = GetComponent<scr_player_inventory> ();
 		managerScript = GetComponent<scr_player_MANAGER> ();
+		// Can change amount of nearby interactable objects if need be, but there should not be too many.
 		nearbyInteractables = new GameObject[5];
 	}
 	
@@ -34,51 +34,63 @@ public class scr_player_interaction : MonoBehaviour {
 	void Update () {
 
 		// Interact button.
-		if (Input.GetKeyDown (KeyCode.JoystickButton2) && canInteract) {
+		if (Input.GetKeyDown (KeyCode.JoystickButton2)) {
 
 			// Check through the array of interactables objects. Interact with the closest one.
-			int nearestObjectIndex = -1; // Setting values because Unity asking that they not be empty.
-			float nearestObjectDistance = 0; // Setting values because Unity asking that they not be empty.
-			for (int i = 0; i < nearbyInteractables.Length; i++) {
-				// If not null, check how far from the player object.
-				if (nearbyInteractables [i] != null) {
-					// If there's nothing in the nearestObjectDistance check yet, just take the first value. -1 means nothing was put in there.
-					if (nearestObjectIndex == -1) {
-						nearestObjectDistance = Vector3.Distance (nearbyInteractables [i].transform.position, transform.position);
-						nearestObjectIndex = i; // The new nearest object is set.
-					}
-					// If there's a smaller distance between another object and the player, make that the thing to interact with.
-					else if (Vector3.Distance (nearbyInteractables [i].transform.position, transform.position) < nearestObjectDistance) {
-						nearestObjectDistance = Vector3.Distance (nearbyInteractables [i].transform.position, transform.position);
-						nearestObjectIndex = i; // The new nearest object is set.
-					}
-				}
-			}
+			int currentNearestObjectIndex = CheckNearestObjectSlot();
 
-			// If it's an item, do this:
-			if (nearbyInteractables [nearestObjectIndex].tag.Trim ().Equals ("Item".Trim ())) {
-				if (!inventoryScript.CheckFull()) {
-					int itemID = nearbyInteractables [nearestObjectIndex].GetComponent<scr_item_ID> ().GetItemID ();
-					inventoryScript.AddItem (itemID);
-					// Get rid of object from scene.
-					Destroy (nearbyInteractables [nearestObjectIndex]);
-					// Remove from interactable objects array.
-					nearbyInteractables [nearestObjectIndex] = null;
+			// If not null, and there are nearby interactables...
+			if (currentNearestObjectIndex > -1) {
+				// If it's an item, do this:
+				if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Item".Trim ())) {
+					if (!inventoryScript.CheckFull ()) {
+						int itemID = nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_item_ID> ().GetItemID ();
+						inventoryScript.AddItem (itemID);
+						// Get rid of object from scene.
+						Destroy (nearbyInteractables [currentNearestObjectIndex]);
+						// Remove from interactable objects array.
+						nearbyInteractables [currentNearestObjectIndex] = null;
+					}
 				}
 			}
 		}
 
-		checkExclamationUI ();
+		CheckExclamationUI ();
+	}
+
+	int CheckNearestObjectSlot(){
+		
+		// Run a check of nearest object's index in the nearbyInteractables array.
+		int nearestObjectIndex = -1; // Setting values because Unity asking that they not be empty.
+		float nearestObjectDistance = 0; // Setting values because Unity asking that they not be empty.
+		for (int i = 0; i < nearbyInteractables.Length; i++) {
+			// If not null, check how far from the player object.
+			if (nearbyInteractables [i] != null) {
+				// If there's nothing in the nearestObjectDistance check yet, just take the first value. -1 means nothing was put in there.
+				if (nearestObjectIndex == -1) {
+					nearestObjectDistance = Vector3.Distance (nearbyInteractables [i].transform.position, transform.position);
+					nearestObjectIndex = i; // The new nearest object is set.
+				}
+				// If there's a smaller distance between another object and the player, make that the thing to interact with.
+				else if (Vector3.Distance (nearbyInteractables [i].transform.position, transform.position) < nearestObjectDistance) {
+					nearestObjectDistance = Vector3.Distance (nearbyInteractables [i].transform.position, transform.position);
+					nearestObjectIndex = i; // The new nearest object is set.
+				}
+			}
+		}
+		return nearestObjectIndex;
 	}
 
 	// If there are no nearby interactable objects, turn off the exclamation object UI.
-	void checkExclamationUI(){
+	void CheckExclamationUI(){
 		
 		bool interactablesEmpty = true;
 
 		for (int i = 0; i < nearbyInteractables.Length; i++) {
 			if (nearbyInteractables [i] != null) {
 				interactablesEmpty = false;
+				// UI on!
+				exclamationUI.SetActive (true);
 				return;
 			}
 		}
@@ -88,9 +100,13 @@ public class scr_player_interaction : MonoBehaviour {
 		}
 	}
 
+	public void DeactivateExclamationUI(){
+		exclamationUI.SetActive (false);
+	}
+
 	// Check to see if the player entered the range of interactable objects.
 	void OnTriggerEnter(Collider col){
-		if (col.tag.Trim().Equals("Item".Trim())){// == ("Item")) {
+		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("Dialogue".Trim())){
 			// UI on!
 			exclamationUI.SetActive (true);
 			// Add to array of nearby interactables.
@@ -107,7 +123,7 @@ public class scr_player_interaction : MonoBehaviour {
 
 	// Check to see if the player exited the range of interactable objects.
 	void OnTriggerExit(Collider col){
-		if (col.tag.Trim().Equals("Item".Trim())){// == ("Item")) {
+		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("Dialogue".Trim())){
 			// Remove from list of nearby interactables.
 			for (int i = 0; i < nearbyInteractables.Length; i++) {
 				// Remove the interactable from the array.

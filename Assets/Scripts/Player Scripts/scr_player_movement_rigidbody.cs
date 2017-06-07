@@ -8,15 +8,12 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 	float moveSpeed;
 
 	public float jumpForce;
-	public float myGravity;
 	public float groundDrag;
 	public float airDrag;
 
-	public bool jump;
+	bool jump;
 
-	public float heightAdjust;
-
-	public bool inMenu = false;
+	public bool free = true;
 
 	float inputX = 0f;
 	float inputY = 0f;
@@ -27,18 +24,19 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 
 	Rigidbody rb;
 
-	bool onGround = true;
+	public bool onGround = true;
 
-	private delegate void StateMachine();
-	private StateMachine stateMachine;
+	scr_player_groundcheck groundcheckScript;
 
 	void Start () {
 		moveSpeed = baseMoveSpeed;
 		rb = GetComponent<Rigidbody> ();
 		rb.drag = groundDrag;
+
+		groundcheckScript = GetComponent<scr_player_groundcheck> ();
 	}
 
-	void WalkControls(){
+	void Controls(){
 		// see RigidbodyControl.cs for full info on these input axes
 		inputX = Input.GetAxis("Horizontal");
 		inputY = Input.GetAxis("Vertical");
@@ -50,28 +48,27 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 		if (Input.GetKeyUp (KeyCode.Joystick1Button1)) {
 			moveSpeed = baseMoveSpeed;
 		}
+		if(Input.GetKeyDown (KeyCode.Joystick1Button0) && onGround){
+			jump = true;
+		}
 	}
-	void JumpControls(){ if(Input.GetKeyDown (KeyCode.Joystick1Button0)){ jump = true; } }
+
+	public void ResetMovementValues(){
+		rb.velocity = Vector3.zero;
+		inputX = 0f;
+		inputY = 0f;
+	}
 
 	void Update () {
 
-		if (stateMachine != null) { stateMachine; }
-
-		if (!inMenu) { stateMachine = WalkControls; stateMachine += JumpControls; }
-
-		// Checks to see if you're on the ground and not falling currently.
-		if (rb.velocity.y < 0.05f && Vector3.Distance (transform.position, hit.point) <= heightAdjust) {
-			onGround = true;
-			rb.drag = groundDrag;
-			transform.position = new Vector3 (transform.position.x, hit.point.y + heightAdjust, transform.position.z);
-			// Ground drag back on
-			//Debug.Log("On Ground reset accessed");
-		} else if (Vector3.Distance (transform.position, hit.point) > heightAdjust + 0.05f) {
-			rb.drag = airDrag;
-			onGround = false;
-		}
+		onGround = groundcheckScript.onGround;
+		
+		Controls ();
 
 		if (onGround) {
+
+			rb.drag = groundDrag;
+
 			movement = new Vector3 (inputX, 0.0f, inputY);
 			if (inputX < -.001f || inputX > .001f || inputY > .001f || inputY < -.001f) {
 				transform.rotation = Quaternion.LookRotation (movement);
@@ -84,9 +81,9 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 					rb.drag = groundDrag;
 				}
 			}
+		} else {
+			rb.drag = airDrag;
 		}
-
-		//Debug.Log ("Grounded : " + onGround);
 	}
 
 
@@ -114,11 +111,5 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 				// Ground drag off, air drag on
 			}
 		}
-
-		// Always apply significant gravity
-		rb.AddForce (-transform.up * myGravity, ForceMode.Impulse);
-
-		//Debug.Log (hit.point);
-		Debug.DrawLine(transform.position, hit.point, Color.red);
 	}
 }

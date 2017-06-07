@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class scr_textbox_manager : MonoBehaviour {
 
 	public GameObject textBox;
-	public Text theText;
-
+	public Text onscreenText;
 	// For TextAssets...
 	public TextAsset textFile;
 	// For strings... (Play with both. See which ends up being better.)
@@ -55,7 +54,8 @@ public class scr_textbox_manager : MonoBehaviour {
 		// ".text" references the actual characters of the file
 		// Basically, this grabs the current line from the text file which was broken down from the textFile asset to the textLines array. It dumps it into the onscreen Text appearing in the textBox.
 
-		theText.text = textLines[currentLine];
+		onscreenText.text = textLines [currentLine];
+		// Debug.Log(textLines[currentLine]);
 	}
 
 	// For setting up new text lines based on text assets.
@@ -69,7 +69,7 @@ public class scr_textbox_manager : MonoBehaviour {
 		if (endAtLine == 0) {
 			endAtLine = textLines.Length - 1;
 		}
-	}
+	}/*
 	// For setting up new text lines based on strings.
 	public void SetNewString(string newLine){
 		currentLine = 0;
@@ -81,7 +81,7 @@ public class scr_textbox_manager : MonoBehaviour {
 		if (endAtLine == 0) {
 			endAtLine = textLines.Length - 1;
 		}
-	}
+	}*/
 
 	public void EnableTextBox(bool setEnable){
 		enableUI = setEnable;

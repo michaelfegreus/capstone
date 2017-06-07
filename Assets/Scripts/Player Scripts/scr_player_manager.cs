@@ -9,44 +9,70 @@ public class scr_player_MANAGER : MonoBehaviour {
 	scr_player_interaction interactionScript;
 	scr_player_inventory inventoryScript;
 
+	bool inItemMenu;
+	bool onGround;
+	bool inDialogue;
+	bool inAnimation;
+	bool free;
+
+	//State currentPlayerState;
+
 	void Start(){
 		movementScript = GetComponent<scr_player_movement_rigidbody> ();
 		interactionScript = GetComponent<scr_player_interaction> ();
 		inventoryScript = GetComponent<scr_player_inventory> ();
+
+		free = true;
+		//currentPlayerState = State.free;
 	}
 
-	// Changes what the player is able to do depending on the current state.
-	/*public void PlayerStateChange(int newState){
-		
-		switch (State) {
+	void Update(){
 
-		case State.free:
-			movementScript.canMove = true;
-			interactionScript.canInteract = true;
-			Debug.Log ("Player State: FREE");
-			break;
+		// If it detects a change in state...
+		if (inItemMenu != inventoryScript.inItemMenu) {
+			free = false;
+			inItemMenu = inventoryScript.inItemMenu;
+		}
+		if(onGround != movementScript.onGround){
+			free = false;
+			onGround = movementScript.onGround;
+		}
+		if (inDialogue != interactionScript.inDialogue) {
+			free = false;
+			inDialogue = interactionScript.inDialogue;
+		}
 
-		case State.menu:
-			Debug.Log ("Player State: MENU");
-			break;
-
-
-		default:
-			Debug.Log ("No player state");
-			break;
+		// State change settings.
+		if (!free) {
+			if (!onGround) {
+				interactionScript.DeactivateExclamationUI();
+				interactionScript.enabled = false;
+				inventoryScript.enabled = false;
+				//currentPlayerState = State.inAir;
+			} else if (inItemMenu) {
+				movementScript.ResetMovementValues ();
+				movementScript.enabled = false;
+				interactionScript.enabled = false;
+				//currentPlayerState = State.inMenu;
+			} else if (inDialogue) {
+				movementScript.ResetMovementValues ();
+				movementScript.enabled = false;
+				interactionScript.enabled = false;
+				inventoryScript.enabled = false;
+				//currentPlayerState = State.inDialogue;
+			} else {
+				free = true;
+				movementScript.enabled = true;
+				interactionScript.enabled = true;
+				inventoryScript.enabled = true;
+				//currentPlayerState = State.free;
+			}
 		}
 	}
 
-	public enum State{
+	/*public enum State{
 
-		free,menu
-	}
+		free, inAnimation, inMenu, inDialogue, inAir
 
-	public string GetState(){
-		switch (State) {
-
-		case State.free:
-			return "free";
-		}
 	}*/
 }
