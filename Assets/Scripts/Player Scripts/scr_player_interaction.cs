@@ -34,7 +34,7 @@ public class scr_player_interaction : MonoBehaviour {
 	void Update () {
 
 		// Interact button.
-		if (Input.GetKeyDown (KeyCode.JoystickButton2)) {
+		if (Input.GetKeyDown (KeyCode.JoystickButton2) || Input.GetKeyDown (KeyCode.P) ) {
 
 			// Check through the array of interactables objects. Interact with the closest one.
 			int currentNearestObjectIndex = CheckNearestObjectSlot();
@@ -51,6 +51,9 @@ public class scr_player_interaction : MonoBehaviour {
 						// Remove from interactable objects array.
 						nearbyInteractables [currentNearestObjectIndex] = null;
 					}
+				}
+				if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Dialogue".Trim ())) {
+					inDialogue = true;
 				}
 			}
 		}

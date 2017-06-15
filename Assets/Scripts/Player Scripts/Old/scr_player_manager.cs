@@ -17,7 +17,7 @@ public class scr_player_manager : MonoBehaviour {
 	// To manage other scripts from player
 	scr_inventory inventoryScript;
 	scr_player_movement movementScript;
-	scr_contextsensitive_input contextSensitiveInputScript;
+	//scr_contextsensitive_input contextSensitiveInputScript;
 
 	// To interact with the tool manager when tools are engaged with.
 	scr_tool_manager toolManagerScript;
@@ -31,7 +31,7 @@ public class scr_player_manager : MonoBehaviour {
 		inventoryScript = GetComponent<scr_inventory> ();
 		movementScript = GetComponent<scr_player_movement> ();
 		toolManagerScript = GetComponent<scr_tool_manager> ();
-		contextSensitiveInputScript = GetComponent<scr_contextsensitive_input> ();
+		//contextSensitiveInputScript = GetComponent<scr_contextsensitive_input> ();
 		//gameManagerScript = GetComponent<scr_game_manager> ();
 		// Component on different object.
 		//textBoxManagerScript = textBoxManager.GetComponent<scr_textbox_manager> ();
@@ -40,7 +40,7 @@ public class scr_player_manager : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D col){
 		if (col.tag == ("Trigger")) {
 			trigger = col.GetComponent<scr_contextsensitive_location> ().GetLocationID ();
-			contextSensitiveInputScript.changeContextLocation(trigger);
+		//	contextSensitiveInputScript.changeContextLocation(trigger);
 
 			// Prepare the Text Box Manager with the text file of the signboard. Useful so it can be ready for when you press A.
 			if (trigger == Triggers.SIGNBOARD) {
@@ -55,7 +55,7 @@ public class scr_player_manager : MonoBehaviour {
 
 			// If you walk away from a sign, disable the text box.
 			if (trigger == Triggers.SIGNBOARD) {
-				textBoxManagerScript.EnableTextBox (false);
+		//		textBoxManagerScript.EnableTextBox (false);
 			}
 
 			trigger = Triggers.GENERAL;

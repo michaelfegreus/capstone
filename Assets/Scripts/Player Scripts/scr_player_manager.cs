@@ -9,13 +9,11 @@ public class scr_player_MANAGER : MonoBehaviour {
 	scr_player_interaction interactionScript;
 	scr_player_inventory inventoryScript;
 
-	bool inItemMenu;
-	bool onGround;
-	bool inDialogue;
-	bool inAnimation;
-	bool free;
-
-	//State currentPlayerState;
+	public bool inItemMenu;
+	public bool onGround;
+	public bool inDialogue;
+	public bool inAnimation;
+	public bool free;
 
 	void Start(){
 		movementScript = GetComponent<scr_player_movement_rigidbody> ();
