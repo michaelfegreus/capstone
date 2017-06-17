@@ -52,7 +52,7 @@ public class scr_player_interaction : MonoBehaviour {
 						nearbyInteractables [currentNearestObjectIndex] = null;
 					}
 				}
-				if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Dialogue".Trim ())) {
+				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Dialogue".Trim ())) {
 					inDialogue = true;
 				}
 			}

@@ -21,19 +21,19 @@ public class scr_game_MANAGER : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// If this script notices that the text box has been closed...
-		if (inDialogue != textBoxScript.textBoxActive) {
+		/*if (inDialogue != textBoxScript.textBoxActive) {
 			inDialogue = textBoxScript.textBoxActive;
 			if (inDialogue == false) {
 				Debug.Log ("Let the player move again.");
-				playerScript.inDialogue = false;
-				playerScript.free = true;
+				playerScript.currentState = playerScript.PlayerState.free;
+				playerScript.changeState = true;
 			}
 		}
 		// If this script notices that the player is in dialogue...
 		if (inDialogue != playerScript.inDialogue) {
 			inDialogue = playerScript.inDialogue;
 			textBoxScript.ActivateTextBox ();
-		}
+		}*/
 
 	}
 }
