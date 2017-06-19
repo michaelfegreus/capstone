@@ -29,18 +29,6 @@ public class scr_player_MANAGER : MonoBehaviour {
 	}
 
 	void Update(){
-		/*
-		if (inventoryScript.inItemMenu == true) {
-			if (currentState != State.inMenu) {
-				StateChange (State.inMenu);
-			}
-		} else if (inventoryScript == false && ) {
-
-		}
-*/
-		/*
-
-		}*/
 		
 		// If it detects a change in state...
 		if (inventoryScript.inItemMenu == true && currentState != State.inMenu) {
@@ -48,7 +36,7 @@ public class scr_player_MANAGER : MonoBehaviour {
 		}
 		if(movementScript.onGround != true && currentState != State.inAir){
 			//changeState = false;
-		StateChange (State.inAir);
+			StateChange (State.inAir);
 		}
 		if (interactionScript.inDialogue == true && currentState != State.inDialogue) {
 			//changeState = false;
@@ -58,33 +46,7 @@ public class scr_player_MANAGER : MonoBehaviour {
 		if (interactionScript.inDialogue == false && inventoryScript.inItemMenu == false && movementScript.onGround == true && currentState != State.free) {
 			StateChange (State.free);
 		}
-		/*
-		// State change settings.
-		if (!free) {
-			if (!onGround) {
-				interactionScript.DeactivateExclamationUI();
-				interactionScript.enabled = false;
-				inventoryScript.enabled = false;
-				//currentPlayerState = State.inAir;
-			} else if (inItemMenu) {
-				movementScript.ResetMovementValues ();
-				movementScript.enabled = false;
-				interactionScript.enabled = false;
-				//currentPlayerState = State.inMenu;
-			} else if (inDialogue) {
-				movementScript.ResetMovementValues ();
-				movementScript.enabled = false;
-				interactionScript.enabled = false;
-				inventoryScript.enabled = false;
-				//currentPlayerState = State.inDialogue;
-			} else {
-				free = true;
-				movementScript.enabled = true;
-				interactionScript.enabled = true;
-				inventoryScript.enabled = true;
-				//currentPlayerState = State.free;
-			}
-		}*/
+
 	}
 
 	public void StateChange(State newState){
@@ -94,31 +56,30 @@ public class scr_player_MANAGER : MonoBehaviour {
 		switch (currentState) {
 
 		case State.free:
-			Debug.Log ("Current player state: Free");
+			//Debug.Log ("Current player state: Free");
 			movementScript.enabled = true;
 			interactionScript.enabled = true;
 			inventoryScript.enabled = true;
 			break;
 
 		case State.inAir:
-			Debug.Log ("Current player state: Free");
+			//Debug.Log ("Current player state: Free");
 			interactionScript.DeactivateExclamationUI();
 			interactionScript.enabled = false;
 			inventoryScript.enabled = false;
 			break;
 
 		case State.inMenu:
-			Debug.Log ("Current player state: In Menu");
+			//Debug.Log ("Current player state: In Menu");
 			movementScript.ResetMovementValues ();
 			movementScript.enabled = false;
 			interactionScript.enabled = false;
 			break;
 
 		case State.inDialogue:
-			Debug.Log ("Current player state: In Dialogue");
+			//Debug.Log ("Current player state: In Dialogue");
 			movementScript.ResetMovementValues ();
 			movementScript.enabled = false;
-			interactionScript.enabled = false;
 			inventoryScript.enabled = false;
 			break;
 

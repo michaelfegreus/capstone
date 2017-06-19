@@ -20,12 +20,17 @@ public class scr_player_interaction : MonoBehaviour {
 	// Interact with Player Manager
 	scr_player_MANAGER managerScript;
 
+	// To deal with the textbox UI when the player enters dialogue.
+	public GameObject textBoxManager;
+	scr_textbox_manager textBoxScript;
+
 	public bool inDialogue;
 
 	// Use this for initialization
 	void Start () {
 		inventoryScript = GetComponent<scr_player_inventory> ();
 		managerScript = GetComponent<scr_player_MANAGER> ();
+		textBoxScript = textBoxManager.GetComponent<scr_textbox_manager> ();
 		// Can change amount of nearby interactable objects if need be, but there should not be too many.
 		nearbyInteractables = new GameObject[5];
 	}
@@ -34,7 +39,7 @@ public class scr_player_interaction : MonoBehaviour {
 	void Update () {
 
 		// Interact button.
-		if (Input.GetKeyDown (KeyCode.JoystickButton2) || Input.GetKeyDown (KeyCode.P) ) {
+		if (!inDialogue && Input.GetKeyDown (KeyCode.JoystickButton2) || Input.GetKeyDown (KeyCode.P) ) {
 
 			// Check through the array of interactables objects. Interact with the closest one.
 			int currentNearestObjectIndex = CheckNearestObjectSlot();
@@ -54,7 +59,15 @@ public class scr_player_interaction : MonoBehaviour {
 				}
 				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Dialogue".Trim ())) {
 					inDialogue = true;
+					// Activates the text box and sends along the text asset to parse.
+					textBoxScript.ActivateTextBox (nearbyInteractables[currentNearestObjectIndex].GetComponent<scr_mytext_check>().GetText());
 				}
+			}
+		}
+		// Check to see if dialogue is finished.
+		if (inDialogue) {
+			if (!textBoxScript.textBoxActive) {
+				inDialogue = false;
 			}
 		}
 

@@ -1,11 +1,4 @@
 Welcome to Vivarium.
 This is a test.
-...
-Dummy text.
-Dummy text.
-Dummy text.
-Dummy text.
-Dummy text.
-Dummy text.
-Dummy text.
-Dummy text.
+I am a signboard.
+This is the fourth and final line.

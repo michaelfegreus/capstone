@@ -10,7 +10,7 @@ public class scr_game_MANAGER : MonoBehaviour {
 	scr_textbox_manager textBoxScript;
 
 	// Player state conditions
-	bool inDialogue;
+	bool inDialogue = false;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +20,8 @@ public class scr_game_MANAGER : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+	
 		// If this script notices that the text box has been closed...
 		/*if (inDialogue != textBoxScript.textBoxActive) {
 			inDialogue = textBoxScript.textBoxActive;

@@ -25,6 +25,18 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 	Rigidbody rb;
 
 	public bool onGround = true;
+	bool holdingRunButton = false;
+
+	// Alpha dustcloud fun times.
+	public GameObject dustcloudPrefab;
+	public GameObject smallDustcloudPrefab; // For transitioning between walk and run
+	// Place where dustclouds start.
+	public Transform dustcloudSpawn;
+	// Times the intervals between dustclouds.
+	float dustcloudTimer = 0f;
+	// How long you've been running
+	float runningTimer = 0f;
+	float endRunTimer = 100f; // Start with high number so it doesn't trigger until ready
 
 	scr_player_groundcheck groundcheckScript;
 
@@ -44,19 +56,32 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 		// Temporary run controls
 		if (Input.GetKeyDown (KeyCode.Joystick1Button1)) {
 			moveSpeed = baseMoveSpeed *2;
+			holdingRunButton = true;
 		}
 		if (Input.GetKeyUp (KeyCode.Joystick1Button1)) {
+			EndRun ();
 			moveSpeed = baseMoveSpeed;
+			holdingRunButton = false;
 		}
 		if(Input.GetKeyDown (KeyCode.Joystick1Button0) && onGround){
 			jump = true;
 		}
 	}
 
+	void EndRun(){
+		
+		// If you've been running for a bit, start the cooldown on the run dust clouds.
+		if (runningTimer > .4f) {
+			endRunTimer = 0f;
+		}
+		runningTimer = 0f;
+	}
+
 	public void ResetMovementValues(){
 		rb.velocity = Vector3.zero;
 		inputX = 0f;
 		inputY = 0f;
+		EndRun ();
 	}
 
 	void Update () {
@@ -72,6 +97,10 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			movement = new Vector3 (inputX, 0.0f, inputY);
 			if (inputX < -.001f || inputX > .001f || inputY > .001f || inputY < -.001f) {
 				transform.rotation = Quaternion.LookRotation (movement);
+			} else {
+				if (holdingRunButton) {
+					EndRun ();
+				}
 			}
 
 			// Lerp from the air drag to the ground drag
@@ -84,6 +113,44 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 		} else {
 			rb.drag = airDrag;
 		}
+
+		// If running and on ground (makes sure you are moving).
+		// Also keeps track of how long you've been running.
+		if (holdingRunButton && onGround && (inputX < -.001f || inputX > .001f || inputY > .001f || inputY < -.001f)) {
+			runningTimer += Time.deltaTime;
+			// Play with the .3f value to change how frequently they appear.
+			if (runningTimer > .15f && runningTimer < .4f) {
+				if (dustcloudTimer > .05f) {
+					// Instantiate dustclouds roughly at feet location.
+					Instantiate (smallDustcloudPrefab, dustcloudSpawn.position, transform.rotation);
+					dustcloudTimer = 0f;
+				} else {
+					dustcloudTimer = dustcloudTimer + Time.deltaTime;
+
+				}
+			}
+			if (runningTimer > .4f) {
+				if (dustcloudTimer > .05f) {
+					// Instantiate dustclouds roughly at feet location.
+					Instantiate (dustcloudPrefab, dustcloudSpawn.position, transform.rotation);
+					dustcloudTimer = 0f;
+				} else {
+					dustcloudTimer = dustcloudTimer + Time.deltaTime;
+				}
+			}
+		}
+		// To transition out of run
+		if (endRunTimer < .3f) {
+			if (dustcloudTimer > .05f) {
+				// Instantiate dustclouds roughly at feet location.
+				Instantiate (smallDustcloudPrefab, dustcloudSpawn.position, transform.rotation);
+				dustcloudTimer = 0f;
+			} else {
+				dustcloudTimer += Time.deltaTime;
+			}
+			endRunTimer += Time.deltaTime;
+		}
+
 	}
 
 

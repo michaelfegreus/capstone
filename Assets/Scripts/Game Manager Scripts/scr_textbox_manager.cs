@@ -18,9 +18,9 @@ public class scr_textbox_manager : MonoBehaviour {
 	public int currentLine;
 	public int endAtLine;
 
-	public void ActivateTextBox(){
+	public void ActivateTextBox(TextAsset newTextFile){
+		textFile = newTextFile;
 		textBoxActive = true;
-
 		currentLine = 0;
 
 		textLines = new string[1];
@@ -28,9 +28,8 @@ public class scr_textbox_manager : MonoBehaviour {
 		if (textFile != null) {
 			textLines = (textFile.text.Split('\n'));
 		}
-		if (endAtLine == 0) {
-			endAtLine = textLines.Length - 1;
-		}
+
+		endAtLine = textLines.Length - 1;
 
 		textBoxUI.SetActive (true);
 	}
@@ -44,7 +43,7 @@ public class scr_textbox_manager : MonoBehaviour {
 	void Update () {
 		if (textBoxActive) {
 			onscreenText.text = textLines [currentLine];
-			if (Input.GetKeyDown (KeyCode.Return)) {
+			if (Input.GetKeyDown (KeyCode.Return) || Input.GetKeyDown (KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.JoystickButton2)) {
 				currentLine += 1;
 			}
 			// If you get to the end of the text, close the textbox and deactivate it.
