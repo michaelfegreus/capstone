@@ -6,6 +6,10 @@ public class scr_item_use_check : MonoBehaviour {
 
 	public int requiredItemID;
 
+	public bool gotItem = false;
+
+	public bool takeItemFromPlayer;
+
 	// Color debug
 	Renderer rend;
 
@@ -15,10 +19,9 @@ public class scr_item_use_check : MonoBehaviour {
 
 	public void UseItemCheck(int incomingItemID){
 		if (incomingItemID == requiredItemID) {
-			Debug.Log ("Got correct item. Happy.");
 			rend.material.SetColor ("_Color", Color.blue);
+			gotItem = true;
 		} else {
-			Debug.Log ("Got incorrect item. F'ing pissed.");
 			rend.material.SetColor ("_Color", Color.red);
 		}
 	}

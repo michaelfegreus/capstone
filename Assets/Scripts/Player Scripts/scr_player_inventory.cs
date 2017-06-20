@@ -34,19 +34,11 @@ public class scr_player_inventory : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Joystick1Button3)) {
 			// Close menu
 			if (inItemMenu == true) {
-				inItemMenu = false;
-				inventoryUI.SetActive (false);
+				CloseInventoryMenu ();
 			}
 			// Open menu
 			else if (inItemMenu == false) {
-				inItemMenu = true;
-				inventoryUI.SetActive (true);
-				// Set the list's item IDs
-				for (int i = 0; i < helditemIDs.Length; i++) {
-					inventoryUIScript.UpdateItemArray(i, helditemIDs[i]);
-				}
-				// Updates text (and hopefully soon images) for all the items.
-				inventoryUIScript.UpdateMenuSlots();
+				OpenInventoryMenu ();
 			}
 		}
 
@@ -143,13 +135,46 @@ public class scr_player_inventory : MonoBehaviour {
 
 	}
 
+	void OpenInventoryMenu(){
+		inItemMenu = true;
+		inventoryUI.SetActive (true);
+		// Set the list's item IDs
+		for (int i = 0; i < helditemIDs.Length; i++) {
+			inventoryUIScript.UpdateItemArray(i, helditemIDs[i]);
+		}
+		// Updates text (and hopefully soon images) for all the items.
+		inventoryUIScript.UpdateMenuSlots();
+	}
+
+	void CloseInventoryMenu(){
+		inItemMenu = false;
+		inventoryUI.SetActive (false);
+	}
+
 	public void UseItem(){
 		// Check through the array of interactables objects. Interact with the closest one.
 		int currentNearestObjectIndex = CheckNearestObjectSlot();
 		// If not null, and there are nearby interactables...
 		if (currentNearestObjectIndex > -1) {
 			// Pass over the item ID at that the cursor is highlighting right now to the nearest object that checks items.
-			nearbyInteractables[currentNearestObjectIndex].GetComponent<scr_item_use_check>().UseItemCheck(helditemIDs[cursorIndex]);
+			scr_item_use_check npcItemScript = nearbyInteractables[currentNearestObjectIndex].GetComponent<scr_item_use_check>();
+			npcItemScript.UseItemCheck (helditemIDs [cursorIndex]);
+			// If the NPC is supposed to receive the item from the player...
+			if (npcItemScript.takeItemFromPlayer) {
+				// Remove the item from the player's inventory only if it's the right item.
+				if (npcItemScript.gotItem) {
+					helditemIDs [cursorIndex] = 0;
+				}
+				// Close menu after you give an item.
+				CloseInventoryMenu();
+			}
+		}
+	}
+
+	void SortInventoryArray(){
+		int[] sortedInventory = new int[helditemIDs.Length];
+		for (int i = 0; i < helditemIDs.Length; i++) {
+			
 		}
 	}
 

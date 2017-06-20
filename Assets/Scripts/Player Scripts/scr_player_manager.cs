@@ -56,28 +56,28 @@ public class scr_player_MANAGER : MonoBehaviour {
 		switch (currentState) {
 
 		case State.free:
-			//Debug.Log ("Current player state: Free");
+			Debug.Log ("Current player state: Free");
 			movementScript.enabled = true;
 			interactionScript.enabled = true;
 			inventoryScript.enabled = true;
 			break;
 
 		case State.inAir:
-			//Debug.Log ("Current player state: Free");
+			Debug.Log ("Current player state: Free");
 			interactionScript.DeactivateExclamationUI();
 			interactionScript.enabled = false;
 			inventoryScript.enabled = false;
 			break;
 
 		case State.inMenu:
-			//Debug.Log ("Current player state: In Menu");
+			Debug.Log ("Current player state: In Menu");
 			movementScript.ResetMovementValues ();
 			movementScript.enabled = false;
 			interactionScript.enabled = false;
 			break;
 
 		case State.inDialogue:
-			//Debug.Log ("Current player state: In Dialogue");
+			Debug.Log ("Current player state: In Dialogue");
 			movementScript.ResetMovementValues ();
 			movementScript.enabled = false;
 			inventoryScript.enabled = false;

@@ -31,6 +31,8 @@ public class scr_textbox_manager : MonoBehaviour {
 
 		endAtLine = textLines.Length - 1;
 
+		onscreenText.text = textLines [currentLine];
+
 		textBoxUI.SetActive (true);
 	}
 
