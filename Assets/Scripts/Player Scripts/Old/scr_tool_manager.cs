@@ -5,7 +5,7 @@ using UnityEngine;
 public class scr_tool_manager : MonoBehaviour {
 
 	// To get general info about what the player's doing
-	scr_player_manager playerManagerScript;
+	//scr_player_manager playerManagerScript;
 
 	// ID for the tool being used.
 	int currentTool;
@@ -19,7 +19,7 @@ public class scr_tool_manager : MonoBehaviour {
 	int wateringCanLevel = 0;
 
 	void Start(){
-		playerManagerScript = GetComponent<scr_player_manager> ();
+	//	playerManagerScript = GetComponent<scr_player_manager> ();
 	}
 
 	void WateringCanRoutine(){
@@ -57,8 +57,8 @@ public class scr_tool_manager : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.T) && !usingTool) {
 
 			// Checks the current tools and location context.
-			currentTool = playerManagerScript.currentTool;
-			currentTrigger = playerManagerScript.trigger;
+		//	currentTool = playerManagerScript.currentTool;
+		//	currentTrigger = playerManagerScript.trigger;
 
 			switch (currentTool) {
 

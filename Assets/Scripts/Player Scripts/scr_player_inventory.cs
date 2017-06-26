@@ -157,17 +157,20 @@ public class scr_player_inventory : MonoBehaviour {
 		// If not null, and there are nearby interactables...
 		if (currentNearestObjectIndex > -1) {
 			// Pass over the item ID at that the cursor is highlighting right now to the nearest object that checks items.
-			scr_item_use_check npcItemScript = nearbyInteractables[currentNearestObjectIndex].GetComponent<scr_item_use_check>();
-			npcItemScript.UseItemCheck (helditemIDs [cursorIndex]);
-			// If the NPC is supposed to receive the item from the player...
-			if (npcItemScript.takeItemFromPlayer) {
-				// Remove the item from the player's inventory only if it's the right item.
-				if (npcItemScript.requiredItemID == helditemIDs [cursorIndex]) {
-					helditemIDs [cursorIndex] = 0;
-					SortInventoryArray ();
+			scr_item_quest npcItemScript = nearbyInteractables[currentNearestObjectIndex].GetComponent<scr_item_quest>();
+			// If it hasn't already got its item...
+			if (!npcItemScript.gotItems) {
+				npcItemScript.UseItemCheck (helditemIDs [cursorIndex]);
+				// If the NPC is supposed to receive the item from the player...
+				if (npcItemScript.takeItemFromPlayer) {
+					
+					if (npcItemScript.gotItems) {
+						helditemIDs [cursorIndex] = 0;
+						SortInventoryArray ();
+					}
+					// Close menu after you give an item.
+					CloseInventoryMenu ();
 				}
-				// Close menu after you give an item.
-				CloseInventoryMenu();
 			}
 		}
 	}
@@ -216,7 +219,7 @@ public class scr_player_inventory : MonoBehaviour {
 	// Check to see if the player entered the range of interactable objects with an item check script.
 	void OnTriggerEnter(Collider col){
 		// If there's an item check script...
-		if (col.GetComponent<scr_item_use_check>() != null){// == ("Item")) {
+		if (col.GetComponent<scr_item_quest>() != null){// == ("Item")) {
 			// Add to array of nearby interactables.
 			for (int i = 0; i < nearbyInteractables.Length; i++) {
 				// If it finds a null slot, then it replaces it with the interactable.
@@ -231,7 +234,7 @@ public class scr_player_inventory : MonoBehaviour {
 
 	// Check to see if the player exited the range of interactable objects.
 	void OnTriggerExit(Collider col){
-		if (col.GetComponent<scr_item_use_check>() != null){// == ("Item")) {
+		if (col.GetComponent<scr_item_quest>() != null){// == ("Item")) {
 			// Remove from list of nearby interactables.
 			for (int i = 0; i < nearbyInteractables.Length; i++) {
 				// Remove the interactable from the array.

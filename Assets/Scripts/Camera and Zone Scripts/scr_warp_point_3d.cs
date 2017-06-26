@@ -23,7 +23,7 @@ public class scr_warp_point_3d : MonoBehaviour {
 		if (col.tag == ("Player")) {
 			thePlayer = col.gameObject;
 			// Warps player to a destination empty object transform
-			thePlayer.GetComponent<scr_player_manager> ().Warp (destinationWarp.position);
+			//thePlayer.GetComponent<scr_player_manager> ().Warp (destinationWarp.position);
 
 			// Swap the camera
 			cameraOpScript.SetNewCamera (newCam, myBG);

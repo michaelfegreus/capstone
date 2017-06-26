@@ -18,7 +18,7 @@ public class scr_warp_point : MonoBehaviour {
 		if (col.tag == ("Player")) {
 			thePlayer = col.gameObject;
 			// Warps player to a destination empty object transform
-			thePlayer.GetComponent<scr_player_manager> ().Warp (destinationWarp.position);
+			//thePlayer.GetComponent<scr_player_manager> ().Warp (destinationWarp.position);
 			myCam.enabled = false;
 			newCam.enabled = true;
 		}

@@ -14,11 +14,11 @@ public class scr_stamina_manager : MonoBehaviour {
 	public Image staminaBarUI;
 
 	// To get the manager and disable other components when the player is out of stamina. 
-	scr_player_manager playerManagerScript;
+	//scr_player_manager playerManagerScript;
 
 	// Use this for initialization
 	void Start () {
-		playerManagerScript = GetComponent<scr_player_manager> ();
+		//playerManagerScript = GetComponent<scr_player_manager> ();
 		StartDayStamina ();
 	}
 	
@@ -52,6 +52,6 @@ public class scr_stamina_manager : MonoBehaviour {
 		haveStamina = false;
 		Debug.Log ("Day is over.");
 		// Can't use inventory or tools when you are out of stamina.
-		playerManagerScript.DayStaminaDeplete();
+	//	playerManagerScript.DayStaminaDeplete();
 	}
 }

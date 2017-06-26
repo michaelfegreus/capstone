@@ -24,7 +24,7 @@ public class scr_inventory : MonoBehaviour {
 	scr_item_encyclopedia itemEncyclopediaScript;
 
 	// To interact with the tool manager when tools are engaged with.
-	scr_player_manager playerManagerScript;
+	//scr_player_manager playerManagerScript;
 
 	// To check if an item is being picked up.
 	bool pickUp = false;
@@ -33,7 +33,7 @@ public class scr_inventory : MonoBehaviour {
 		inventoryBarUIScript = inventoryBarUI.GetComponent<scr_inventory_ui> ();
 		toolInventoryBarUIScript = toolInventoryBarUI.GetComponent<scr_inventory_tool_ui> ();
 		itemEncyclopediaScript = itemEncyclopedia.GetComponent<scr_item_encyclopedia> ();
-		playerManagerScript = this.GetComponent<scr_player_manager> ();
+	//	playerManagerScript = this.GetComponent<scr_player_manager> ();
 	}
 
 	public bool CheckFull(){
@@ -71,7 +71,7 @@ public class scr_inventory : MonoBehaviour {
 		currentTool = itemID;
 		Sprite imageSpriteToAdd = itemEncyclopediaScript.GetToolSprite(itemID);
 		toolInventoryBarUIScript.AddToolImage (imageSpriteToAdd);
-		playerManagerScript.SetCurrentTool (currentTool);
+		//playerManagerScript.SetCurrentTool (currentTool);
 	}
 
 	public void PlaceItem(){
