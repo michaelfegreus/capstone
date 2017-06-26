@@ -54,16 +54,16 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 		inputY = Input.GetAxis("Vertical");
 
 		// Temporary run controls
-		if (Input.GetKeyDown (KeyCode.Joystick1Button1)) {
+		if (Input.GetKeyDown (KeyCode.JoystickButton1)) {
 			moveSpeed = baseMoveSpeed *2;
 			holdingRunButton = true;
 		}
-		if (Input.GetKeyUp (KeyCode.Joystick1Button1)) {
+		if (Input.GetKeyUp (KeyCode.JoystickButton1)) {
 			EndRun ();
 			moveSpeed = baseMoveSpeed;
 			holdingRunButton = false;
 		}
-		if(Input.GetKeyDown (KeyCode.Joystick1Button0) && onGround){
+		if(Input.GetKeyDown (KeyCode.JoystickButton0) && onGround){
 			jump = true;
 		}
 	}

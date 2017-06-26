@@ -31,7 +31,7 @@ public class scr_player_inventory : MonoBehaviour {
 
 	void Update(){
 		// Open up the menu on a button input. This includes functionality that updates what is written in the text UI.
-		if (Input.GetKeyDown (KeyCode.Joystick1Button3)) {
+		if (Input.GetKeyDown (KeyCode.JoystickButton3)) {
 			// Close menu
 			if (inItemMenu == true) {
 				CloseInventoryMenu ();
@@ -80,7 +80,7 @@ public class scr_player_inventory : MonoBehaviour {
 			float inputY = Input.GetAxis("Vertical");
 			// If you haven't just moved the cursor.
 		
-			if (Input.GetKeyDown(KeyCode.Joystick1Button5)) {
+			if (Input.GetKeyDown(KeyCode.JoystickButton5)) {
 					// If the next cursor slot is past the end of the array...
 					if (cursorIndex + 1 >= helditemIDs.Length) {
 						cursorIndex = 0;
@@ -90,7 +90,7 @@ public class scr_player_inventory : MonoBehaviour {
 					inventoryUIScript.UpdateCursorIndex (cursorIndex);
 				}
 				// If input up
-			if (Input.GetKeyDown(KeyCode.Joystick1Button4)) {
+			if (Input.GetKeyDown(KeyCode.JoystickButton4)) {
 					// If the next cursor slot is below 0...
 					if (cursorIndex - 1 < 0) {
 						cursorIndex = helditemIDs.Length - 1;
@@ -102,7 +102,7 @@ public class scr_player_inventory : MonoBehaviour {
 		}
 		// To use an item in menu...
 		if (inItemMenu){
-			if (Input.GetKeyDown (KeyCode.Joystick1Button0)) {
+			if (Input.GetKeyDown (KeyCode.JoystickButton0)) {
 				// If not currently highlighting an empty item ID.
 				if (helditemIDs [cursorIndex] != 0) {
 					UseItem ();
@@ -162,8 +162,9 @@ public class scr_player_inventory : MonoBehaviour {
 			// If the NPC is supposed to receive the item from the player...
 			if (npcItemScript.takeItemFromPlayer) {
 				// Remove the item from the player's inventory only if it's the right item.
-				if (npcItemScript.gotItem) {
+				if (npcItemScript.requiredItemID == helditemIDs [cursorIndex]) {
 					helditemIDs [cursorIndex] = 0;
+					SortInventoryArray ();
 				}
 				// Close menu after you give an item.
 				CloseInventoryMenu();
@@ -173,8 +174,19 @@ public class scr_player_inventory : MonoBehaviour {
 
 	void SortInventoryArray(){
 		int[] sortedInventory = new int[helditemIDs.Length];
+		int sortedInventorySlot = 0; // Keep track of where we are along the sorted inventory
 		for (int i = 0; i < helditemIDs.Length; i++) {
-			
+			if (helditemIDs [i] != 0) { // If the item ID is not 0 aka the slot is not empty
+				sortedInventory[sortedInventorySlot] = helditemIDs[i];
+				sortedInventorySlot++;
+			}
+		}
+		for (int i = 0; i < helditemIDs.Length; i++) { // Copy the sorted array into the main inventory array.
+			if (sortedInventory [i] != 0) { // If the item ID is not 0 aka the slot is not empty
+				helditemIDs [i] = sortedInventory [i];
+			} else {
+				helditemIDs [i] = 0;
+			}
 		}
 	}
 

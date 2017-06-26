@@ -24,13 +24,13 @@ public class scr_rig_controller : MonoBehaviour {
 	void Update () {
 
 		// Temporary run controls
-		if (Input.GetKeyDown (KeyCode.Joystick1Button1)) {
+		if (Input.GetKeyDown (KeyCode.JoystickButton1)) {
 			//running = true;
 			anim.SetBool ("running", true);
 			// *** Try doubling the speed of the walk as a temporary fix. Delete this later.
 			anim.speed = runAnimationPatchSpeed;
 		}
-		if (Input.GetKeyUp (KeyCode.Joystick1Button1)) {
+		if (Input.GetKeyUp (KeyCode.JoystickButton1)) {
 			anim.SetBool ("running", false);
 			// *** Try doubling the speed of the walk as a temporary fix. Delete this later.
 			anim.speed = 1.0f;

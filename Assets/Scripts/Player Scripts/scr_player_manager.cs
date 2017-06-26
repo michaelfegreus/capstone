@@ -9,12 +9,6 @@ public class scr_player_MANAGER : MonoBehaviour {
 	scr_player_interaction interactionScript;
 	scr_player_inventory inventoryScript;
 
-	/*public bool inItemMenu;
-	public bool onGround;
-	public bool inDialogue;
-	public bool inAnimation;*/
-	public bool changeState;
-
 	public State currentState;
 
 	void Start(){
@@ -22,7 +16,6 @@ public class scr_player_MANAGER : MonoBehaviour {
 		interactionScript = GetComponent<scr_player_interaction> ();
 		inventoryScript = GetComponent<scr_player_inventory> ();
 
-		changeState = true;
 		//currentPlayerState = State.free;
 
 		currentState = State.free;
