@@ -8,7 +8,7 @@ public class scr_player_inventory : MonoBehaviour {
 
 	// The inventory UI to visually communicate the inventory.
 	public GameObject inventoryUI;
-	scr_inventorytext_manager inventoryUIScript;
+	scr_ui_inventory_manager inventoryUIScript;
 
 	// Keeps track of when the UI menu is open.
 	public bool inItemMenu = false;
@@ -23,7 +23,7 @@ public class scr_player_inventory : MonoBehaviour {
 	public GameObject[] nearbyInteractables;
 
 	void Start(){
-		inventoryUIScript = inventoryUI.GetComponent<scr_inventorytext_manager> ();
+		inventoryUIScript = inventoryUI.GetComponent<scr_ui_inventory_manager> ();
 		// Set the inventory UI's item ID array size.
 		inventoryUIScript.SetItemArray(helditemIDs.Length);
 		nearbyInteractables = new GameObject[5];
@@ -31,7 +31,7 @@ public class scr_player_inventory : MonoBehaviour {
 
 	void Update(){
 		// Open up the menu on a button input. This includes functionality that updates what is written in the text UI.
-		if (Input.GetKeyDown (KeyCode.JoystickButton3)) {
+		if (Input.GetKeyDown (KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.I)) {
 			// Close menu
 			if (inItemMenu == true) {
 				CloseInventoryMenu ();
@@ -102,7 +102,7 @@ public class scr_player_inventory : MonoBehaviour {
 		}
 		// To use an item in menu...
 		if (inItemMenu){
-			if (Input.GetKeyDown (KeyCode.JoystickButton0)) {
+			if (Input.GetKeyDown (KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.Return)) {
 				// If not currently highlighting an empty item ID.
 				if (helditemIDs [cursorIndex] != 0) {
 					UseItem ();

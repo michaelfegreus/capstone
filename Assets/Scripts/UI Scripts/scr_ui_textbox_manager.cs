@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class scr_textbox_manager : MonoBehaviour {
+public class scr_ui_textbox_manager : MonoBehaviour {
 
 	// State of textbox
 	public bool textBoxActive = false;

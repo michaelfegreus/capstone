@@ -6,6 +6,7 @@ using UnityEngine;
 public class Item{
 
 	public string name;
+	public string description;
 	public int iD;
 	public Sprite itemSprite;
 	public GameObject itemObject;

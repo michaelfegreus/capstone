@@ -7,7 +7,7 @@ public class scr_game_MANAGER : MonoBehaviour {
 	public GameObject playerObject;
 	scr_player_MANAGER playerScript;
 
-	scr_textbox_manager textBoxScript;
+	scr_ui_textbox_manager textBoxScript;
 
 	// Player state conditions
 	bool inDialogue = false;
@@ -15,7 +15,7 @@ public class scr_game_MANAGER : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		playerScript = playerObject.GetComponent<scr_player_MANAGER>();
-		textBoxScript = GetComponent<scr_textbox_manager> ();
+		textBoxScript = GetComponent<scr_ui_textbox_manager> ();
 	}
 	
 	// Update is called once per frame

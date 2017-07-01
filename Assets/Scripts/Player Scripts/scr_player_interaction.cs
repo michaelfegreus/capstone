@@ -22,7 +22,7 @@ public class scr_player_interaction : MonoBehaviour {
 
 	// To deal with the textbox UI when the player enters dialogue.
 	public GameObject textBoxManager;
-	scr_textbox_manager textBoxScript;
+	scr_ui_textbox_manager textBoxScript;
 
 	public bool inDialogue;
 
@@ -30,7 +30,7 @@ public class scr_player_interaction : MonoBehaviour {
 	void Start () {
 		inventoryScript = GetComponent<scr_player_inventory> ();
 		managerScript = GetComponent<scr_player_MANAGER> ();
-		textBoxScript = textBoxManager.GetComponent<scr_textbox_manager> ();
+		textBoxScript = textBoxManager.GetComponent<scr_ui_textbox_manager> ();
 		// Can change amount of nearby interactable objects if need be, but there should not be too many.
 		nearbyInteractables = new GameObject[5];
 	}
