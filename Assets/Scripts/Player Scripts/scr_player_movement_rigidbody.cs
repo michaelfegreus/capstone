@@ -38,12 +38,18 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 	float runningTimer = 0f;
 	float endRunTimer = 100f; // Start with high number so it doesn't trigger until ready
 
+	// Windzone for stepping on and displacing grass or other terrain elements.
+	WindZone grassStep;
+
 	scr_player_groundcheck groundcheckScript;
 
 	void Start () {
 		moveSpeed = baseMoveSpeed;
 		rb = GetComponent<Rigidbody> ();
 		rb.drag = groundDrag;
+
+		grassStep = GetComponent<WindZone> ();
+		grassStep.windTurbulence = 0f;
 
 		groundcheckScript = GetComponent<scr_player_groundcheck> ();
 	}
@@ -112,8 +118,11 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			}
 		} else {
 			rb.drag = airDrag;
+
+			grassStep.windTurbulence = 1.75f;
 		}
 
+		// Dust cloud scripting:
 		// If running and on ground (makes sure you are moving).
 		// Also keeps track of how long you've been running.
 		if (holdingRunButton && onGround && (inputX < -.001f || inputX > .001f || inputY > .001f || inputY < -.001f)) {
@@ -165,6 +174,13 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			// Move input that pushes the character forward towards the direction faced
 			if (inputX < -.001f || inputX > .001f || inputY > .001f || inputY < -.001f) {
 				rb.AddForce (transform.forward * moveSpeed, ForceMode.Impulse);
+				grassStep.windTurbulence = 1.4f;
+			}
+			// If you're on the ground and not moving
+			else {
+				if (onGround) {
+					grassStep.windTurbulence = 0f;
+				}
 			}
 
 			// Jump input

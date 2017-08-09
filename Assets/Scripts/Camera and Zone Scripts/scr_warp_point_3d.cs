@@ -16,7 +16,9 @@ public class scr_warp_point_3d : MonoBehaviour {
 	scr_camera_operator cameraOpScript;
 
 	void Start(){
-		cameraOpScript = cameraOp.GetComponent<scr_camera_operator> ();
+		if (cameraOp != null) {
+			cameraOpScript = cameraOp.GetComponent<scr_camera_operator> ();
+		}
 	}
 
 	void OnTriggerEnter(Collider col){
@@ -24,9 +26,12 @@ public class scr_warp_point_3d : MonoBehaviour {
 			thePlayer = col.gameObject;
 			// Warps player to a destination empty object transform
 			//thePlayer.GetComponent<scr_player_manager> ().Warp (destinationWarp.position);
+			thePlayer.transform.position = destinationWarp.transform.position;
 
 			// Swap the camera
-			cameraOpScript.SetNewCamera (newCam, myBG);
+			if (cameraOp != null) {
+				cameraOpScript.SetNewCamera (newCam, myBG);
+			}
 		}
 	}
 }

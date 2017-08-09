@@ -18,22 +18,27 @@ public class scr_ui_textbox_manager : MonoBehaviour {
 	public int currentLine;
 	public int endAtLine;
 
+	// To prevent you from going to the next page on the same frame as opening text box.
+	bool bufferInput = false;
+
 	public void ActivateTextBox(TextAsset newTextFile){
 		textFile = newTextFile;
-		textBoxActive = true;
-		currentLine = 0;
-
-		textLines = new string[1];
-
 		if (textFile != null) {
-			textLines = (textFile.text.Split('\n'));
+			textBoxActive = true;
+			currentLine = 0;
+
+			textLines = new string[1];
+
+			if (textFile != null) {
+				textLines = (textFile.text.Split ('\n'));
+			}
+
+			endAtLine = textLines.Length - 1;
+
+			onscreenText.text = textLines [currentLine];
+
+			textBoxUI.SetActive (true);
 		}
-
-		endAtLine = textLines.Length - 1;
-
-		onscreenText.text = textLines [currentLine];
-
-		textBoxUI.SetActive (true);
 	}
 
 	// Use this for initialization
@@ -45,11 +50,21 @@ public class scr_ui_textbox_manager : MonoBehaviour {
 	void Update () {
 		if (textBoxActive) {
 			onscreenText.text = textLines [currentLine];
-			if (Input.GetKeyDown (KeyCode.Return) || Input.GetKeyDown (KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.JoystickButton2)) {
-				currentLine += 1;
+			if (bufferInput == true) {
+				if (Input.GetKeyDown (KeyCode.Return) || Input.GetKeyDown (KeyCode.JoystickButton0) || Input.GetKeyDown (KeyCode.JoystickButton2)) {
+					
+					currentLine += 1;
+					
+				}
+			}
+			else{
+				if (Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.JoystickButton0) || Input.GetKeyUp (KeyCode.JoystickButton2)) {
+					bufferInput = true;
+				}
 			}
 			// If you get to the end of the text, close the textbox and deactivate it.
 			if (currentLine > endAtLine) {
+				bufferInput = false;
 				textBoxUI.SetActive (false);
 				textBoxActive = false;
 			}

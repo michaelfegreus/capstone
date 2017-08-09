@@ -7,7 +7,7 @@ public class scr_npc_MANAGER : MonoBehaviour {
 	//public int questLength;
 
 	public Quest[] questList;
-	int currentQuest;
+	public int currentQuest;
 
 	scr_item_quest itemQuestScript;
 	scr_mytext_check textCheckScript;

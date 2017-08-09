@@ -57,10 +57,26 @@ public class scr_player_interaction : MonoBehaviour {
 						nearbyInteractables [currentNearestObjectIndex] = null;
 					}
 				}
+				// And if it's a character or signboard, do this.
 				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Dialogue".Trim ())) {
 					inDialogue = true;
 					// Activates the text box and sends along the text asset to parse.
-					textBoxScript.ActivateTextBox (nearbyInteractables[currentNearestObjectIndex].GetComponent<scr_mytext_check>().GetText());
+					textBoxScript.ActivateTextBox (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> ().GetText ());
+				}
+				// And if it's something that reacts upon interaction, like a door, do this.
+				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Interactable".Trim ())) {
+					// Make sure it has a script that allows
+					if (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_interactable_check> () != null) {
+						nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_interactable_check> ().RunAction ();
+					} else {
+						Debug.Log ("This interactable doesn't have an Interactable Check script attached to it.");
+					}
+					// And if it has a dialogue script attached to it, run that too.
+					if (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> ().GetText () != null) {
+						inDialogue = true;
+						// Activates the text box and sends along the text asset to parse.
+						textBoxScript.ActivateTextBox (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> ().GetText ());
+					}
 				}
 			}
 		}
@@ -122,7 +138,7 @@ public class scr_player_interaction : MonoBehaviour {
 
 	// Check to see if the player entered the range of interactable objects.
 	void OnTriggerEnter(Collider col){
-		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("Dialogue".Trim())){
+		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim())){
 			// UI on!
 			exclamationUI.SetActive (true);
 			// Add to array of nearby interactables.
@@ -139,7 +155,7 @@ public class scr_player_interaction : MonoBehaviour {
 
 	// Check to see if the player exited the range of interactable objects.
 	void OnTriggerExit(Collider col){
-		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("Dialogue".Trim())){
+		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim())){
 			// Remove from list of nearby interactables.
 			for (int i = 0; i < nearbyInteractables.Length; i++) {
 				// Remove the interactable from the array.

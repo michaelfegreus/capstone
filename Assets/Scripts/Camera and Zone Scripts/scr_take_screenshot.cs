@@ -8,8 +8,8 @@ public class scr_take_screenshot : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.P)) {
-			Application.CaptureScreenshot (screenshotName + ".png", 2);
+		if (Input.GetKeyDown (KeyCode.C)) {
+			ScreenCapture.CaptureScreenshot (screenshotName + ".png", 2);
 		}
 	}
 }

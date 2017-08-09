@@ -8,6 +8,7 @@ public class scr_dustcloud : MonoBehaviour {
 
 	public void Start(){
 		myRiseSpeed = Random.Range (.005f, .015f);
+		transform.rotation = Random.rotation;
 	}
 
 	public void DestroyMe(){
