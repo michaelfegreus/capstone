@@ -52,10 +52,11 @@ public class scr_npc_MANAGER : MonoBehaviour {
 
 	public void QuestComplete(){
 		// Go to next quest, if there's another one after this.
-		// Need to make sure there's a quest to end for this to work in the full game.
-		if (currentQuest + 1 < questList.Length) {
+		// Need to make sure there's a quest to end for this to work in the full game. 
+		// 8/9/2017 ^ This might not be necessary to end a quest. Eventually you may want to create an "End" quest type to indicate what should be done when a quest is over.
+		//if (currentQuest + 1 < questList.Length) {
 			currentQuest++;
-		}
+		//}
 		Debug.Log (this.name + " Quest level : " + currentQuest);
 		QuestSetup();
 	}
