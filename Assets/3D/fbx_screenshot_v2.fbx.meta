@@ -1,0 +1,227 @@
+fileFormatVersion: 2
+guid: e80f8d349c71cde458687d5c644f2436
+timeCreated: 1493826166
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ankle_jnt_L
+    100002: ankle_jnt_R
+    100004: clavicle_jnt_L
+    100006: clavicle_jnt_R
+    100008: elbow_jnt_L
+    100010: elbow_jnt_R
+    100012: //RootNode
+    100014: foot_jnt_L
+    100016: foot_jnt_R
+    100018: head_jnt_1
+    100020: head_jnt_2
+    100022: HIP_CTRL
+    100024: hip_jnt_L
+    100026: hip_jnt_R
+    100028: index_jnt_L_1
+    100030: index_jnt_L_2
+    100032: index_jnt_L_3
+    100034: index_jnt_L_4
+    100036: index_jnt_R_1
+    100038: index_jnt_R_2
+    100040: index_jnt_R_3
+    100042: index_jnt_R_4
+    100044: JOINTS
+    100046: knee_jnt_L
+    100048: knee_jnt_R
+    100050: MASTER
+    100052: md_gardener
+    100054: middlefinger_jnt_L_1
+    100056: middlefinger_jnt_L_2
+    100058: middlefinger_jnt_L_3
+    100060: middlefinger_jnt_L_4
+    100062: middlefinger_jnt_R_1
+    100064: middlefinger_jnt_R_2
+    100066: middlefinger_jnt_R_3
+    100068: middlefinger_jnt_R_4
+    100070: neck_jnt
+    100072: palm_jnt_L
+    100074: palm_jnt_R
+    100076: pinky_jnt_L_1
+    100078: pinky_jnt_L_2
+    100080: pinky_jnt_L_3
+    100082: pinky_jnt_L_4
+    100084: pinky_jnt_R_1
+    100086: pinky_jnt_R_2
+    100088: pinky_jnt_R_3
+    100090: pinky_jnt_R_4
+    100092: polySurface1
+    100094: polySurface2
+    100096: ring_jnt_L_1
+    100098: ring_jnt_L_2
+    100100: ring_jnt_L_3
+    100102: ring_jnt_L_4
+    100104: ring_jnt_R_1
+    100106: ring_jnt_R_2
+    100108: ring_jnt_R_3
+    100110: ring_jnt_R_4
+    100112: ROOT
+    100114: should_jnt_L
+    100116: should_jnt_R
+    100118: spine_jnt_1
+    100120: spine_jnt_2
+    100122: thumb_jnt_L_1
+    100124: thumb_jnt_L_2
+    100126: thumb_jnt_L_3
+    100128: thumb_jnt_L_4
+    100130: thumb_jnt_R_1
+    100132: thumb_jnt_R_2
+    100134: thumb_jnt_R_3
+    100136: thumb_jnt_R_4
+    100138: toe_jnt_L
+    100140: toe_jnt_R
+    100142: wrist_jnt_L
+    100144: wrist_jnt_R
+    400000: ankle_jnt_L
+    400002: ankle_jnt_R
+    400004: clavicle_jnt_L
+    400006: clavicle_jnt_R
+    400008: elbow_jnt_L
+    400010: elbow_jnt_R
+    400012: //RootNode
+    400014: foot_jnt_L
+    400016: foot_jnt_R
+    400018: head_jnt_1
+    400020: head_jnt_2
+    400022: HIP_CTRL
+    400024: hip_jnt_L
+    400026: hip_jnt_R
+    400028: index_jnt_L_1
+    400030: index_jnt_L_2
+    400032: index_jnt_L_3
+    400034: index_jnt_L_4
+    400036: index_jnt_R_1
+    400038: index_jnt_R_2
+    400040: index_jnt_R_3
+    400042: index_jnt_R_4
+    400044: JOINTS
+    400046: knee_jnt_L
+    400048: knee_jnt_R
+    400050: MASTER
+    400052: md_gardener
+    400054: middlefinger_jnt_L_1
+    400056: middlefinger_jnt_L_2
+    400058: middlefinger_jnt_L_3
+    400060: middlefinger_jnt_L_4
+    400062: middlefinger_jnt_R_1
+    400064: middlefinger_jnt_R_2
+    400066: middlefinger_jnt_R_3
+    400068: middlefinger_jnt_R_4
+    400070: neck_jnt
+    400072: palm_jnt_L
+    400074: palm_jnt_R
+    400076: pinky_jnt_L_1
+    400078: pinky_jnt_L_2
+    400080: pinky_jnt_L_3
+    400082: pinky_jnt_L_4
+    400084: pinky_jnt_R_1
+    400086: pinky_jnt_R_2
+    400088: pinky_jnt_R_3
+    400090: pinky_jnt_R_4
+    400092: polySurface1
+    400094: polySurface2
+    400096: ring_jnt_L_1
+    400098: ring_jnt_L_2
+    400100: ring_jnt_L_3
+    400102: ring_jnt_L_4
+    400104: ring_jnt_R_1
+    400106: ring_jnt_R_2
+    400108: ring_jnt_R_3
+    400110: ring_jnt_R_4
+    400112: ROOT
+    400114: should_jnt_L
+    400116: should_jnt_R
+    400118: spine_jnt_1
+    400120: spine_jnt_2
+    400122: thumb_jnt_L_1
+    400124: thumb_jnt_L_2
+    400126: thumb_jnt_L_3
+    400128: thumb_jnt_L_4
+    400130: thumb_jnt_R_1
+    400132: thumb_jnt_R_2
+    400134: thumb_jnt_R_3
+    400136: thumb_jnt_R_4
+    400138: toe_jnt_L
+    400140: toe_jnt_R
+    400142: wrist_jnt_L
+    400144: wrist_jnt_R
+    2300000: polySurface1
+    2300002: polySurface2
+    3300000: polySurface1
+    3300002: polySurface2
+    4300000: polySurface1
+    4300002: polySurface2
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
