@@ -5,11 +5,25 @@ using UnityEngine;
 public class scr_player_movement_rigidbody : MonoBehaviour {
 
 	public float baseMoveSpeed;
-	float moveSpeed;
+	float targetMoveSpeed;
+	float currentMoveSpeed = 0f;
+	public float accelerationRate; // Rate at which the player accelerates to meet the target velocity.
+	public float deccelerationRate;
+	public float skidDeccelerationRate; // How quickly the player slows to a stop when skidding.
+	public float skidRegainControlSpeed; // What speed does the player have to deccelerate to in order to begin moving again after a skid.
+	public float skidJumpForce; // How far forward you leap when jumping during a skid.
+
+	Quaternion desiredRotation; // Calculated rotation of where the player is analog sticks are rotating the player towards.
+
 	public float baseRotationSpeed;
 	public float walkRotationSpeed;
 	public float runRotationSpeed;
-	float rotationSpeed;
+	float rotationSpeed; // Rate at which the player rotates to meet the target rotation. 
+	public float pivotThreshold; // The degree of change in angle needed to pass the Pivot Check and skid.
+	public float rotationToMoveThreshold; // The player must be have rotated to within this threshold to begin walking.
+	Vector3 lastDirection;
+
+	float angleDifference; // The difference between the angle of the current rotation and the desired rotation. If it's above 180 degrees, skid.
 
 	public float jumpForce;
 	public float groundDrag;
@@ -17,6 +31,7 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 
 	bool moving;
 	bool jump;
+	bool skidding;
 
 	public bool free = true;
 
@@ -31,10 +46,6 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 
 	//public Transform moveCursor; // The cursor that the player moves towards.
 
-	Vector3 lastDirection;
-	public float oppositeDirectionThreshold; // Range for the detection of the opposite direction turnaround.
-
-	float angleDifference; // The difference between the angle of the current rotation and the desired rotation. If it's above 180 degrees, skid.
 
 	public bool onGround = true;
 	bool running = false;
@@ -59,7 +70,7 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 	scr_player_groundcheck groundcheckScript;
 
 	void Start () {
-		moveSpeed = baseMoveSpeed;
+		targetMoveSpeed = baseMoveSpeed;
 		rotationSpeed = baseRotationSpeed;
 		rb = GetComponent<Rigidbody> ();
 		rb.drag = groundDrag;
@@ -85,12 +96,12 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 
 		// Temporary run controls
 		if (Input.GetKeyDown (KeyCode.JoystickButton1)) {
-			moveSpeed = baseMoveSpeed *2;
+			targetMoveSpeed = baseMoveSpeed *2;
 			running = true;
 		}
 		if (Input.GetKeyUp (KeyCode.JoystickButton1)) {
 			EndRun ();
-			moveSpeed = baseMoveSpeed;
+			targetMoveSpeed = baseMoveSpeed;
 			running = false;
 		}
 		if(Input.GetKeyDown (KeyCode.JoystickButton0) && onGround){
@@ -125,11 +136,17 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			rb.drag = groundDrag;
 
 			movement = new Vector3 (inputX, 0.0f, inputY);
+			desiredRotation = Quaternion.LookRotation (movement); // Get the desired rotation.
+
+			// Checks to see if, while walking/running, the player has dramatically changed the direction of desired movement vs. the current rotation.
+			if (movement != Vector3.zero && !skidding && onGround) {
+				PivotCheck ();
+			}
 
 			if (inputX < -.01f || inputX > .01f || inputY > .01f || inputY < -.01f) {
-				//transform.rotation = Quaternion.LookRotation (movement);
-				transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation (movement), Time.deltaTime * rotationSpeed); // Trying to reach analog stick's rotation angle.
-				//transform.rotation = Quaternion.Lerp(transform.rotation, moveCursor.rotation, Time.deltaTime * rotationSpeed);
+				if(!skidding){ // Can only turn if you aren't currently skidding!
+					transform.rotation = Quaternion.Lerp(transform.rotation, desiredRotation, Time.deltaTime * rotationSpeed); // Trying to reach analog stick's rotation angle.
+				}
 			} else {
 				if (running) {
 					EndRun ();
@@ -143,19 +160,10 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 					rb.drag = groundDrag;
 				}
 			}
-		} else {
+		} else if (!onGround){
 			rb.drag = airDrag;
 
 			grassStep.windTurbulence = 1.75f;
-		}
-
-		// Checks to see if, while walking/running, the player has dramatically changed the direction of desired movement vs. the current rotation.
-		if (movement != Vector3.zero) {
-			angleDifference = Quaternion.Angle (transform.rotation, Quaternion.LookRotation (movement));
-			if (angleDifference > 90f) {
-				Debug.Log (angleDifference);
-				Instantiate (dustcloudCircle, transform.position, transform.rotation);
-			}
 		}
 
 		DustcloudCheck ();
@@ -172,16 +180,25 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 		if (onGround) {
 			// Move input that pushes the character forward towards the direction faced
 			if (inputX < -.01f || inputX > .01f || inputY > .01f || inputY < -.01f) {
-				// If you're already facing the direction, apply velocity. Otherwise, turn before beginning to walk.
-				if (angleDifference > 5f && !moving) {
-					Debug.Log ("Rotating to target direction");
-				}else{
-					if (!moving) {
-						moving = true;
-						movingStopTimer = 0f;
+				if (!skidding) { // Can only change move speed if you're not skidding.
+					// If you're already facing the direction, apply velocity. Otherwise, turn before beginning to walk.
+					if (angleDifference > rotationToMoveThreshold && !moving) {
+						Debug.Log ("Rotating to target direction");
+					} else {
+						if (!moving) {
+							moving = true;
+							movingStopTimer = 0f;
+						}
+						// Lerp to the desired movement speed.
+						if (currentMoveSpeed < targetMoveSpeed) { // Must accelerate.
+							currentMoveSpeed = Mathf.Lerp (currentMoveSpeed, targetMoveSpeed, Time.deltaTime * accelerationRate);
+						} else if (currentMoveSpeed > targetMoveSpeed) { // Must deccelerate.
+							currentMoveSpeed = Mathf.Lerp (currentMoveSpeed, targetMoveSpeed, Time.deltaTime * deccelerationRate);
+						}
+						// Apply force to begin moving!
+						rb.AddForce (transform.forward * currentMoveSpeed, ForceMode.Impulse);
+						grassStep.windTurbulence = 1.4f;
 					}
-					rb.AddForce (transform.forward * moveSpeed, ForceMode.Impulse);
-					grassStep.windTurbulence = 1.4f;
 				}
 			}
 			// If you're on the ground and not moving
@@ -197,15 +214,51 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			// Jump input
 			if(jump) {
 
-				Instantiate (dustcloudCircle, transform.position, transform.rotation);
+				//Instantiate (dustcloudCircle, transform.position, transform.rotation);
 
 				jump = false;
 
 				rb.drag = airDrag;
 				rb.AddForce (transform.up * jumpForce, ForceMode.Impulse);
 				onGround = false;
+
+				if (skidding) { // Bounce in the opposite direction if you're skidding, on top of jumping upwards.
+					transform.rotation = desiredRotation;
+					rb.AddForce (transform.forward * skidJumpForce, ForceMode.Impulse);
+					skidding = false;
+				}
+
 				// Ground drag off, air drag on
 			}
+		}
+		if (skidding) {
+			Skid ();
+		}
+	}
+
+	void PivotCheck(){
+		angleDifference = Quaternion.Angle (transform.rotation, desiredRotation);
+		if (angleDifference > pivotThreshold) {
+			//Debug.Log (angleDifference);
+			if(moving && running && onGround){
+				//transform.rotation =
+				//Instantiate (dustcloudCircle, transform.position, transform.rotation);
+				Debug.Log ("Begin skid");
+				skidding = true;
+			}
+		}
+	}
+
+	void Skid(){
+		// Eventually, this will pair with animation.
+		if (currentMoveSpeed > skidRegainControlSpeed) {
+			rb.AddForce (transform.forward * currentMoveSpeed, ForceMode.Impulse); // Continue to apply force as you slow down to get a decceleration, not an abrupt stop.
+			currentMoveSpeed = Mathf.Lerp (currentMoveSpeed, 0f, Time.deltaTime * skidDeccelerationRate);
+			Debug.Log ("Skidding!");
+		} else if (currentMoveSpeed < skidRegainControlSpeed || !onGround){ // Skid stops when you slow down enough OR when you leave the ground.
+			transform.rotation = desiredRotation; // Flip around the character for the skid.
+			skidding = false;
+			Debug.Log ("End skid.");
 		}
 	}
 
@@ -253,6 +306,11 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 		movingStopTimer += Time.deltaTime;
 		if (movingStopTimer > .1f) {
 			moving = false;
+			// Lerp to the desired movement speed of zero.
+			if (currentMoveSpeed != 0f) {
+				rb.AddForce (transform.forward * currentMoveSpeed, ForceMode.Impulse); // Continue to apply force as you slow down to get a decceleration, not an abrupt stop.
+				currentMoveSpeed = Mathf.Lerp (currentMoveSpeed, 0f, Time.deltaTime * deccelerationRate);
+			}
 		}
 	}
 }
