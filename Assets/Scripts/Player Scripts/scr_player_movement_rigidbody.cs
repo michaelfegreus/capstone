@@ -94,6 +94,7 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			rotationSpeed = runRotationSpeed;
 		}
 
+		// Consider changing this to a case statement series when implementing more run speeds.
 		// Temporary run controls
 		if (Input.GetKeyDown (KeyCode.JoystickButton1)) {
 			targetMoveSpeed = baseMoveSpeed *2;
@@ -170,12 +171,12 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 	}
 
 
-	void FixedUpdate(){
+	void FixedUpdate (){
 		
 		Ray groundRay = new Ray(transform.position, -transform.up);
-		if (Physics.Raycast(groundRay, out hit, 1000f)) {
+		/*if (Physics.Raycast(groundRay, out hit, 1000f)) {
 			// Sets you to heightAdjust's distance above the ground.
-		}
+		}*/
 			
 		if (onGround) {
 			// Move input that pushes the character forward towards the direction faced
