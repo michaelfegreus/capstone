@@ -67,12 +67,12 @@ public class scr_inventory : MonoBehaviour {
 		}
 	}
 
-	public void AddTool(int itemID){
+/*	public void AddTool(int itemID){
 		currentTool = itemID;
 		Sprite imageSpriteToAdd = itemEncyclopediaScript.GetToolSprite(itemID);
 		toolInventoryBarUIScript.AddToolImage (imageSpriteToAdd);
 		//playerManagerScript.SetCurrentTool (currentTool);
-	}
+	}*/
 
 	public void PlaceItem(){
 		// Grabs item at cursor index
@@ -173,7 +173,7 @@ public class scr_inventory : MonoBehaviour {
 			// Tool shed functionality to come soon.
 			if (pickUp && currentTool == 0) {
 				int itemID = col.gameObject.GetComponent<scr_item_ID> ().GetItemID ();
-				AddTool (itemID);
+//				AddTool (itemID);
 				Debug.Log ("Tried to pickup tool");
 				Destroy (col.gameObject);
 				pickUp = false;

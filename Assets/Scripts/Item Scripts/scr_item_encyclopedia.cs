@@ -17,7 +17,7 @@ public class scr_item_encyclopedia : MonoBehaviour {
 		return itemArray[itemID].itemObject;
 	}
 
-	public Tool[] toolArray;
+/*	public Tool[] toolArray;
 
 	public string GetToolName(int itemID){
 		return toolArray[itemID].name;
@@ -28,6 +28,6 @@ public class scr_item_encyclopedia : MonoBehaviour {
 
 	public GameObject GetToolPrefab(int itemID){
 		return toolArray[itemID].toolObject;
-	}
+	}*/
 
 }
