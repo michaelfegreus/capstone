@@ -37,8 +37,10 @@ public class scr_player_groundcheck : MonoBehaviour {
 			// Sets you to heightAdjust's distance above the ground.
 		}
 
-		// Always apply significant gravity
-		rb.AddForce (-transform.up * myGravity, ForceMode.Impulse);
+		// Always apply significant gravity if not on ground
+		if (!onGround) {
+			rb.AddForce (-transform.up * myGravity, ForceMode.Impulse);
+		}
 
 		//Debug.Log (hit.point);
 		Debug.DrawLine(transform.position, hit.point, Color.red);
