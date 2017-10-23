@@ -96,11 +96,11 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 
 		// Consider changing this to a case statement series when implementing more run speeds.
 		// Temporary run controls
-		if (Input.GetKeyDown (KeyCode.JoystickButton1)) {
+		if (Input.GetKeyDown (KeyCode.JoystickButton1) || (Input.GetKeyDown (KeyCode.RightShift) )) {
 			targetMoveSpeed = baseMoveSpeed *2;
 			running = true;
 		}
-		if (Input.GetKeyUp (KeyCode.JoystickButton1)) {
+		if (Input.GetKeyUp (KeyCode.JoystickButton1) || (Input.GetKeyUp (KeyCode.RightShift) )) {
 			EndRun ();
 			targetMoveSpeed = baseMoveSpeed;
 			running = false;
