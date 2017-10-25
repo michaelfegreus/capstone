@@ -21,21 +21,20 @@ public class scr_player_MANAGER : MonoBehaviour {
 
 	void Update(){
 
-		// If it detects a change in state...
-		if (inventoryScript.inItemMenu == true && currentState != State.inMenu) {
-			StateChange (State.inMenu);
-		}
-		if(movementScript.onGround != true && currentState != State.inAir){
-			//changeState = false;
-			StateChange (State.inAir);
-		}
-		if (interactionScript.inDialogue == true && currentState != State.inDialogue) {
-			//changeState = false;
-			currentState = State.inDialogue;
-			StateChange (State.inDialogue);
-		}
-		if (interactionScript.inDialogue == false && inventoryScript.inItemMenu == false && movementScript.onGround == true && currentState != State.free) {
-			StateChange (State.free);
+		// If it detects a change in state...(Only check for things the Player Object manages - not menus or pausing, which the Game Manager object runs).
+		if (currentState != State.inMenu) {
+			if (movementScript.onGround != true && currentState != State.inAir) {
+				//changeState = false;
+				StateChange (State.inAir);
+			}
+			if (interactionScript.inDialogue == true && currentState != State.inDialogue) {
+				//changeState = false;
+				currentState = State.inDialogue;
+				StateChange (State.inDialogue);
+			}
+			if (interactionScript.inDialogue == false && movementScript.onGround == true && currentState != State.free) {
+				StateChange (State.free);
+			}
 		}
 
 	}
@@ -50,14 +49,12 @@ public class scr_player_MANAGER : MonoBehaviour {
 			Debug.Log ("Current player state: Free");
 			movementScript.enabled = true;
 			interactionScript.enabled = true;
-			inventoryScript.enabled = true;
 			break;
 
 		case State.inAir:
 			Debug.Log ("Current player state: Free");
 			interactionScript.DeactivateExclamationUI();
 			interactionScript.enabled = false;
-			inventoryScript.enabled = false;
 			break;
 
 		case State.inMenu:
@@ -71,7 +68,6 @@ public class scr_player_MANAGER : MonoBehaviour {
 			Debug.Log ("Current player state: In Dialogue");
 			movementScript.ResetMovementValues ();
 			movementScript.enabled = false;
-			inventoryScript.enabled = false;
 			break;
 
 		}

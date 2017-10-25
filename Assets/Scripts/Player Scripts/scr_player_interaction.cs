@@ -15,7 +15,7 @@ public class scr_player_interaction : MonoBehaviour {
 	public GameObject exclamationUI;
 
 	// To deal with inventory when the player interacts with items
-	scr_player_inventory inventoryScript;
+	mono_item_inventory inventoryScript;
 
 	// Interact with Player Manager
 	scr_player_MANAGER managerScript;
@@ -28,7 +28,7 @@ public class scr_player_interaction : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		inventoryScript = GetComponent<scr_player_inventory> ();
+		inventoryScript = GetComponent<mono_item_inventory> ();
 		managerScript = GetComponent<scr_player_MANAGER> ();
 		textBoxScript = textBoxManager.GetComponent<scr_ui_textbox_manager> ();
 		// Can change amount of nearby interactable objects if need be, but there should not be too many.
@@ -49,8 +49,9 @@ public class scr_player_interaction : MonoBehaviour {
 				// If it's an item, do this:
 				if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Item".Trim ())) {
 					if (!inventoryScript.CheckFull ()) {
-						int itemID = nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_item_ID> ().GetItemID ();
-						inventoryScript.AddItem (itemID);
+						// OLD: int itemID = nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_item_ID> ().GetItemID ();
+						Item itemPickup = nearbyInteractables [currentNearestObjectIndex].GetComponent<mono_item_pickup_manager> ().GetItemReference ();
+						inventoryScript.AddItem (itemPickup);
 						// Get rid of object from scene.
 						Destroy (nearbyInteractables [currentNearestObjectIndex]);
 						// Remove from interactable objects array.

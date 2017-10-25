@@ -21,7 +21,7 @@ public class scr_inventory : MonoBehaviour {
 
 	// To pull item prefabs from to place.
 	public GameObject itemEncyclopedia;
-	scr_item_encyclopedia itemEncyclopediaScript;
+	//***CHANGING ITEM FUNCTIONALITY 10/24/17*** scr_item_encyclopedia itemEncyclopediaScript;
 
 	// To interact with the tool manager when tools are engaged with.
 	//scr_player_manager playerManagerScript;
@@ -32,7 +32,7 @@ public class scr_inventory : MonoBehaviour {
 	void Start () {
 		inventoryBarUIScript = inventoryBarUI.GetComponent<scr_inventory_ui> ();
 		toolInventoryBarUIScript = toolInventoryBarUI.GetComponent<scr_inventory_tool_ui> ();
-		itemEncyclopediaScript = itemEncyclopedia.GetComponent<scr_item_encyclopedia> ();
+		//***CHANGING ITEM FUNCTIONALITY 10/24/17*** itemEncyclopediaScript = itemEncyclopedia.GetComponent<scr_item_encyclopedia> ();
 	//	playerManagerScript = this.GetComponent<scr_player_manager> ();
 	}
 
@@ -59,8 +59,8 @@ public class scr_inventory : MonoBehaviour {
 			if (helditemIDs [i] == 0) {
 				helditemIDs [i] = itemID;
 				//Time to put the sprite into the UI...
-				Sprite imageSpriteToAdd = itemEncyclopediaScript.GetItemSprite(itemID);
-				inventoryBarUIScript.AddItemImage(i, imageSpriteToAdd);
+				//***CHANGING ITEM FUNCTIONALITY 10/24/17*** Sprite imageSpriteToAdd = itemEncyclopediaScript.GetItemSprite(itemID);
+				//***CHANGING ITEM FUNCTIONALITY 10/24/17*** inventoryBarUIScript.AddItemImage(i, imageSpriteToAdd);
 				// This breaks the loop early
 				return;
 			}
@@ -82,7 +82,7 @@ public class scr_inventory : MonoBehaviour {
 		// If it's not empty...
 		if (itemToPlaceID != 0) {
 			// Instantiates something from the Item Encyclopedia.
-			Instantiate (itemEncyclopediaScript.GetItemPrefab(itemToPlaceID), this.transform.position + new Vector3 (0f, -.5f, -.5f)/*places at player's feet*/, Quaternion.identity);
+			//***CHANGING ITEM FUNCTIONALITY 10/24/17*** Instantiate (itemEncyclopediaScript.GetItemPrefab(itemToPlaceID), this.transform.position + new Vector3 (0f, -.5f, -.5f)/*places at player's feet*/, Quaternion.identity);
 		}
 		// Gets the Inventory bar to remove the sprite from the UI.
 		inventoryBarUIScript.RemoveItemImage (itemIndex, itemToPlaceID);

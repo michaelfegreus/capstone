@@ -34,7 +34,7 @@ public class scr_ui_inventory_manager : MonoBehaviour {
 	public void UpdateMenuSlots(){
 		for (int i = 0; i < itemTextArray.Length; i++) {
 			// Pull from static Item Dictionary object to get the information.
-			itemTextArray [i].text = scr_item_dictionary.itemDictionary.GetName(inventoryItemsID [i]);
+			//***CHANGING ITEM FUNCTIONALITY 10/24/17*** itemTextArray [i].text = scr_item_dictionary.itemDictionary.GetName(inventoryItemsID [i]);
 		}
 	}
 
@@ -50,8 +50,8 @@ public class scr_ui_inventory_manager : MonoBehaviour {
 	// Updates the title, description, and sprite in the Inventory Description Box
 	void UpdateItemDescription(){
 		// Pull from static Item Dictionary object to get the information. Pull item ID from the spot the cursor is currently over in item array.
-		highlightedItemText.text = scr_item_dictionary.itemDictionary.GetName(inventoryItemsID [cursorIndexUI]);
-		itemDescriptionText.text = scr_item_dictionary.itemDictionary.GetDescription (inventoryItemsID [cursorIndexUI]);
+		//***CHANGING ITEM FUNCTIONALITY 10/24/17*** highlightedItemText.text = scr_item_dictionary.itemDictionary.GetName(inventoryItemsID [cursorIndexUI]);
+		//***CHANGING ITEM FUNCTIONALITY 10/24/17*** itemDescriptionText.text = scr_item_dictionary.itemDictionary.GetDescription (inventoryItemsID [cursorIndexUI]);
 
 	}
 }
