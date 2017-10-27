@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class mono_inventory_menu_manager : MonoBehaviour {
 
@@ -23,6 +24,19 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 	//Keeps track of whether the cursor was just moved.
 	bool cursorMove = false;
 
+	// Below copied from scr_ui_inventory_manager
+
+	public Text[] itemTextArray;
+	public int[] inventoryItemsID;
+
+	// UI cursor sprite driven by the cursor's index integer.
+	public Transform cursorSprite;
+
+	// Inventory Description Box objects
+	public Text highlightedItemText;
+	public Text itemDescriptionText;
+	public Image itemSprite;
+
 	void Start(){
 		inventoryUIScript = inventoryUI.GetComponent<scr_ui_inventory_manager> ();
 	}
@@ -32,14 +46,102 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 		currentInventorySize = incomingInventory.itemsHeld.Length;
 		inItemMenu = true;
 		inventoryUI.SetActive (true);
+		UpdateMenuSlots ();
 	}
 	public void CloseInventoryMenu (){
 		inItemMenu = false;
 		inventoryUI.SetActive (false);
 	}
 
+	// Sets and refreshes what is in the actual text boxes.
+	void UpdateMenuSlots(){
+		for (int i = 0; i < itemTextArray.Length; i++) {
+			// Pull strings from Item asset array.
+			if (currentInventory.itemsHeld [i] != null) {
+				itemTextArray [i].text = currentInventory.itemsHeld [i].itemName;
+			} else {
+				itemTextArray [i].text = "-- empty --";
+			}
+		}
+	}
 
+	// Updates the title, description, and sprite in the Inventory Description Box
+	void UpdateItemDescription(){
+		// Pull strings from Item asset array.
+		highlightedItemText.text = currentInventory.itemsHeld[cursorIndex].itemName;
+		itemDescriptionText.text = currentInventory.itemsHeld [cursorIndex].itemDescription;
+	}
 
+	// Updates the current index of the cursor.
+	void UpdateCursorIndex(){
+		// Sets the Y position of the cursor sprite equal to the y position of the current UI spot of the index.
+		cursorSprite.transform.position = new Vector3(cursorSprite.transform.position.x, itemTextArray [cursorIndex].transform.position.y, cursorSprite.transform.position.z);
+		// Update the item description box to reflect the newly highlighted item.
+		UpdateItemDescription();
+	}
+
+	void Update(){
+
+		// Allows you to operate the item menu when it's open
+
+		// Analog stick version of menu control
+		if (inItemMenu) {
+			float inputY = Input.GetAxis("Vertical");
+			// If you haven't just moved the cursor.
+			if (!cursorMove) {
+				// If input down
+				if (inputY < -.5f) {
+					// If the next cursor slot is past the end of the array...
+					if (cursorIndex + 1 == currentInventorySize) {
+						cursorIndex = 0;
+					} else {
+						cursorIndex++;
+					}
+					cursorMove = true;
+					inventoryUIScript.UpdateCursorIndex (cursorIndex);
+				}
+				// If input up
+				if (inputY > .5f) {
+					// If the next cursor slot is below 0...
+					if (cursorIndex - 1 < 0) {
+						cursorIndex = currentInventorySize - 1;
+					} else {
+						cursorIndex--;
+					}
+					cursorMove = true;
+					inventoryUIScript.UpdateCursorIndex (cursorIndex);
+				}
+			} else if (inputY < .5f && inputY > -.5f) {
+				cursorMove = false;
+			}
+		}
+		// Button version of menu control
+		if (inItemMenu) {
+			float inputY = Input.GetAxis("Vertical");
+			// If you haven't just moved the cursor.
+
+			if (Input.GetKeyDown(KeyCode.JoystickButton5)) {
+				// If the next cursor slot is past the end of the array...
+				if (cursorIndex + 1 >= currentInventorySize) {
+					cursorIndex = 0;
+				} else {
+					cursorIndex++;
+				}
+				inventoryUIScript.UpdateCursorIndex (cursorIndex);
+			}
+			// If input up
+			if (Input.GetKeyDown(KeyCode.JoystickButton4)) {
+				// If the next cursor slot is below 0...
+				if (cursorIndex - 1 < 0) {
+					cursorIndex = currentInventorySize - 1;
+				} else {
+					cursorIndex--;
+				} 
+				inventoryUIScript.UpdateCursorIndex (cursorIndex);
+			}
+		}
+	}
+}
 
 
 
@@ -114,7 +216,7 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 				} 
 				inventoryUIScript.UpdateCursorIndex (cursorIndex);
 			}
-		}/*
+		}
 		// To use an item in menu...
 		if (inItemMenu){
 			if (Input.GetKeyDown (KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.Return)) {
@@ -198,4 +300,3 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 			}
 		}
 	}*/
-}

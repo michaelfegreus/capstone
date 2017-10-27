@@ -23,16 +23,20 @@ public class scr_game_MANAGER : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		// Open up the menu on a button input. This includes functionality that updates what is written in the text UI.
+		// Open and close the menu on a button input. This includes functionality that updates what is written in the text UI.
+
+		
 		if (Input.GetKeyDown (KeyCode.JoystickButton3) || Input.GetKeyDown (KeyCode.I)) {
+			// Close menu
 			if (playerScript.currentState == scr_player_MANAGER.State.inMenu) {
 				playerScript.StateChange (scr_player_MANAGER.State.free);
-				// Close menu
+				inventoryMenuManager.enabled = false;
 				inventoryMenuManager.CloseInventoryMenu ();
 			}
 			// Open menu
 			else if (playerScript.currentState == scr_player_MANAGER.State.free) {
 				playerScript.StateChange (scr_player_MANAGER.State.inMenu);
+				inventoryMenuManager.enabled = true;
 				inventoryMenuManager.OpenInventoryMenu (playerObject.GetComponent<mono_item_inventory>());
 			}
 		}
