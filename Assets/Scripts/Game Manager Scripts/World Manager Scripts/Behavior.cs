@@ -12,4 +12,15 @@ public class Behavior : ScriptableObject {
 
 	public string factToModify;
 	public float modifyValue;
+
+	// Fact requirement values
+	public FactCollection requiredBlackboard;
+
+	class RequiredFact{
+		public string requiredFactName;
+		public string requiredFactEquality;
+		public float requiredFactValue;
+	}
+
+	public RequiredFact[] requiredFactList;
 }

@@ -20,10 +20,6 @@ public class mono_behavior_manager : MonoBehaviour {
 	void Start(){
 		dialogScript = GetComponent<scr_mytext_check> ();
 		myBlackboard = GetComponent<mono_blackboard_serialized> ();
-
-		if (currentBehavior != null) {
-			SetupNewBehavior();
-		}
 	}
 
 	void Update(){
@@ -39,9 +35,10 @@ public class mono_behavior_manager : MonoBehaviour {
 	}
 
 	// Prepares for incoming Behavior from list of Behaviors
-	void SetupNewBehavior(){
+	public void SetNewBehavior(Behavior newBehavior){
 		checkConversation = false;
 		behaviorCompleted = false;
+		currentBehavior = newBehavior;
 	}
 
 	void CheckCompleteBehavior(){
@@ -55,7 +52,6 @@ public class mono_behavior_manager : MonoBehaviour {
 			// So if it's a fact about how many times the player has talked to this character, it should add 1 to the fact on dialog trigger.
 			myBlackboard.factBlackboard [currentBehavior.factToModify] += currentBehavior.modifyValue;
 			Debug.Log ("How many times spoken to player according to the blackboard: " + myBlackboard.factBlackboard [currentBehavior.factToModify]);
-			SetupNewBehavior ();
 		}
 	}
 
