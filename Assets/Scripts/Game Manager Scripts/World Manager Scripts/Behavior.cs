@@ -16,11 +16,26 @@ public class Behavior : ScriptableObject {
 	// Fact requirement values
 	public FactCollection requiredBlackboard;
 
-	class RequiredFact{
+	[System.Serializable]
+	public class RequiredFact{
 		public string requiredFactName;
-		public string requiredFactEquality;
+		public Equality requiredFactEquality;
 		public float requiredFactValue;
-	}
 
-	public RequiredFact[] requiredFactList;
+		/*public RequiredFact(string name, string equality, float value){
+			requiredFactName = name;
+			requiredFactEquality = equality;
+			requiredFactValue = value;
+		}*/
+	}
+		
+	// Just...use this for now. The other custom inspector setup was a mess.
+	// And it'll be better to do it will a full custom editor window in the full game when I know what I need.
+	public RequiredFact[] requiredFactArray;
+
+	public enum Equality{
+
+		GreaterThan, LessThan, Equals
+
+	}
 }
