@@ -11,11 +11,11 @@ public class FactCollection : ScriptableObject {
 	// Again, should be a good standard setup for a serialized dictionary.
 
 	// The Fact class within this. This mimics the Key / Value setup that the dictionary will take from.
-	[System.Serializable]
+	/*[System.Serializable]
 	public class Fact{
 		public string factNameKey;
 		public float factValue;
-	}
+	}*/
 
 	public Fact[] myFactCollection;
 }

@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class mono_blackboard : MonoBehaviour {
 
-	//public Fact[] myFacts;
+	// Load the ScriptableObject serialized blackboard asset.
+	public BlackboardSerialized loadedBlackboard;
 
-	public Dictionary<string, float> factBlackboard;
+	public Dictionary<string, float> worldBlackboard;
 
-	void Start(){
+	void Awake(){
 		// Initialize dictionary:
-		factBlackboard = new Dictionary<string, float>();
-
-		// Elements inside the dictionary. Eventually going to want to serialize this.
-		factBlackboard.Add("TimesSpokenToPlayer", 0f);
+		worldBlackboard = new Dictionary<string, float> ();
+		// Elements from ScriptableObject go inside the dictionary!
+		for (int i = 0; i < loadedBlackboard.myFactCollection.Length; i++) {
+			worldBlackboard.Add (loadedBlackboard.myFactCollection [i].factNameKey, loadedBlackboard.myFactCollection [i].factValue);
+		}
 	}
 }

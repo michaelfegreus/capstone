@@ -14,8 +14,6 @@ public class mono_behavior_checker : MonoBehaviour {
 		public mono_behavior_manager actorBehaviorScript;
 	}
 
-	Renderer rend;
-
 	public GameActor[] gameActors;
 
 	void Start(){
@@ -31,9 +29,9 @@ public class mono_behavior_checker : MonoBehaviour {
 
 		*/
 
-		BehaviorCheck ();
+		//BehaviorCheck ();
 	}
-
+	/*
 	void BehaviorCheck(){
 		// Check all actors
 		for(int currentActor = 0; currentActor < gameActors.Length; currentActor++){
@@ -54,5 +52,5 @@ public class mono_behavior_checker : MonoBehaviour {
 	void FactCheck(int factIndex, Behavior behaviorToCheck){
 	// 	Debug.Log (gameActors[0].actorGameObject.GetCbehaviorToCheck.requiredFactArray [factIndex].requiredFactName);
 	}
-
+*/
 }
