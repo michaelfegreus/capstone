@@ -62,7 +62,10 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 	}
 
 	void UpdateWorldBlackboard(ActorBehavior completedBehavior){
-
+		string factChangeKey = completedBehavior.factChangeOnGoal.factNameKey;
+		float factChangeValue = completedBehavior.factChangeOnGoal.factValue;
+		// Now find the fact in the blackboard and change it.
+		blackboardScript.worldBlackboard[factChangeKey] = factChangeValue;
 	}
 
 	// Run this to find out what ActorBehavior everyone should have right now.

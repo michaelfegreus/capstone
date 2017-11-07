@@ -9,15 +9,18 @@ public class ActorBehavior {
 
 	// What is required to satisfy the behavior:
 	public BehaviorGoal myGoal;
+	// If there's a goal, what fact should be altered to what value?
+	public Fact factChangeOnGoal;
 
-
+	public bool hasDestinationLocation;
+	public Vector3 destinationLocation;
 
 	public Fact[] factsRequired; // What facts must return at which values in order to run this Behavior?
 
 	// The goal for this Actor while performing this before (if there is a goal).
 	public enum BehaviorGoal{
 
-		noGoal, conversationGoal
+		noGoal, conversationGoal, shareZoneGoal
 
 	}
 
