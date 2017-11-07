@@ -17,6 +17,10 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 	// Holds all key actors, like the NPCs and the different game areas, and tells them what they should be doing.
 	public Actor[] gameActors;
 
+	// Holds all key items, like the giant seed.
+	public GameObject[] keyItemObjects;
+	mono_key_item[] keyItemScripts;
+
 	// Blackboard script for the World Manager.
 	mono_blackboard blackboardScript;
 
@@ -27,8 +31,12 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 		for (int s = 0; s < gameActors.Length; s++) {
 			gameActors [s].actorScript = gameActors [s].actorGameObject.GetComponent<mono_actor_manager> ();
 		}
-
-		CheckActorStates (); // Get the Actors set up with their Behaviors!
+		// Set every keyItemScript;
+		keyItemScripts = new mono_key_item[keyItemObjects.Length];
+		for (int i = 0; i < keyItemObjects.Length; i++) {
+			keyItemScripts [i] = keyItemObjects [i].GetComponent<mono_key_item> ();
+		}
+		CheckActorStates (); // Get the Actors set up with their Beh	aviors!
 	}
 
 	void Update(){
@@ -36,8 +44,23 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 		for (int a = 0; a < gameActors.Length; a++) {
 			if (gameActors [a].actorScript.goalComplete) {
 				Debug.Log ("Completed goal detected!");
-				UpdateWorldBlackboard (gameActors [a].actorScript.myCurrentBehavior);
+				UpdateWorldBlackboard (gameActors [a].actorScript.myCurrentBehavior.factChangeOnGoal);
 				CheckActorStates ();
+			}
+		}
+		// Check to see if any Key Items have been picked up.
+		CheckKeyItems();
+	}
+
+	void CheckKeyItems(){
+		// Run this to see if any key items have been picked up.
+		for (int i = 0; i < keyItemScripts.Length; i++) {
+			if (keyItemObjects [i].activeInHierarchy) {
+				if (keyItemScripts [i].pickedUp) {
+					Debug.Log ("World Manager detected a Key Item has been picked up");
+					UpdateWorldBlackboard (keyItemScripts [i].factChangeOnPickup);
+					keyItemObjects [i].SetActive (false);
+				}
 			}
 		}
 	}
@@ -61,9 +84,9 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 		return rankScore;
 	}
 
-	void UpdateWorldBlackboard(ActorBehavior completedBehavior){
-		string factChangeKey = completedBehavior.factChangeOnGoal.factNameKey;
-		float factChangeValue = completedBehavior.factChangeOnGoal.factValue;
+	void UpdateWorldBlackboard(Fact changingFact){
+		string factChangeKey = changingFact.factNameKey;
+		float factChangeValue = changingFact.factValue;
 		// Now find the fact in the blackboard and change it.
 		blackboardScript.worldBlackboard[factChangeKey] = factChangeValue;
 	}

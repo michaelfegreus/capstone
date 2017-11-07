@@ -52,8 +52,12 @@ public class scr_player_interaction : MonoBehaviour {
 						// OLD: int itemID = nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_item_ID> ().GetItemID ();
 						Item itemPickup = nearbyInteractables [currentNearestObjectIndex].GetComponent<mono_item_pickup_manager> ().GetItemReference ();
 						inventoryScript.AddItem (itemPickup);
-						// Get rid of object from scene.
-						Destroy (nearbyInteractables [currentNearestObjectIndex]);
+						// Get rid of object from scene if it's not a Key Item. (Key Items so far are destroyed by World Manager after recording pickup data.)
+						if (nearbyInteractables [currentNearestObjectIndex].GetComponent<mono_key_item> () != null) { // Checking to see if there is a key item script.
+							nearbyInteractables [currentNearestObjectIndex].GetComponent<mono_key_item> ().pickedUp = true; // To alert World Manager
+						} else { // Else if it's a common item, destroy it on pickup.
+							Destroy (nearbyInteractables [currentNearestObjectIndex]);
+						}
 						// Remove from interactable objects array.
 						nearbyInteractables [currentNearestObjectIndex] = null;
 					}
