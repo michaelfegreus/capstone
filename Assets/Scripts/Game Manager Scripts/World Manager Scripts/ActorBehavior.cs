@@ -15,12 +15,15 @@ public class ActorBehavior {
 	public bool hasDestinationLocation;
 	public Vector3 destinationLocation;
 
+	// Item to give to player for this behavior.
+	public Item itemToGive;
+
 	public Fact[] factsRequired; // What facts must return at which values in order to run this Behavior?
 
 	// The goal for this Actor while performing this before (if there is a goal).
 	public enum BehaviorGoal{
 
-		noGoal, conversationGoal, shareZoneGoal, keyItemPickup
+		noGoal, conversationGoal, shareZoneGoal, keyItemPickup, giveItemGoal
 
 	}
 

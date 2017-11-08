@@ -10,16 +10,12 @@ public class scr_player_interaction : MonoBehaviour {
 	// An array that keeps track of all the things the trigger collider is colliding with.
 	// This prevents the player from interacting with more than one thing at a time, should interactable objects be close enough.
 	public GameObject[] nearbyInteractables;
-
 	// Cartoon thing that pops up above the player's head to notify that you're in front of something interactable.
 	public GameObject exclamationUI;
-
 	// To deal with inventory when the player interacts with items
 	mono_item_inventory inventoryScript;
-
 	// Interact with Player Manager
 	scr_player_MANAGER managerScript;
-
 	// To deal with the textbox UI when the player enters dialogue.
 	public GameObject textBoxManager;
 	scr_ui_textbox_manager textBoxScript;
@@ -59,11 +55,28 @@ public class scr_player_interaction : MonoBehaviour {
 						nearbyInteractables [currentNearestObjectIndex] = null;
 					}
 				}
+				// And if it's an Actor...
+				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Actor".Trim ())) {
+					// Get that actor's info
+					GameObject interactingActor = nearbyInteractables [currentNearestObjectIndex];
+					mono_actor_manager interactingActorScript = interactingActor.GetComponent<mono_actor_manager> ();
+					if(interactingActorScript.myCurrentBehavior!=null){
+						// Get that actor's current ActorBehavior
+						ActorBehavior interactingActorBehavior = interactingActorScript.myCurrentBehavior;
+						// If the Actor is waiting to give you an item.
+						if(interactingActorBehavior.myGoal == ActorBehavior.BehaviorGoal.giveItemGoal){
+							if (!inventoryScript.CheckFull ()) { // If not full on items.
+								Item itemPickup = interactingActorScript.GetMyBehaviorItem(); // Use the Get function so you can trigger a certain bool to alert tha							t the task has been completed.
+								inventoryScript.AddItem (itemPickup);
+							}
+							RunDialog (interactingActor);
+						}
+					}
+
+				}
 				// And if it's a character or signboard, do this.
 				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Dialogue".Trim ())) {
-					inDialogue = true;
-					// Activates the text box and sends along the text asset to parse.
-					textBoxScript.ActivateTextBox (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> ().GetText ());
+					RunDialog (nearbyInteractables [currentNearestObjectIndex]);
 				}
 				// And if it's something that reacts upon interaction, like a door, do this.
 				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Interactable".Trim ())) {
@@ -90,6 +103,12 @@ public class scr_player_interaction : MonoBehaviour {
 		}
 
 		CheckExclamationUI ();
+	}
+
+	void RunDialog(GameObject dialogInteractable){
+		inDialogue = true;
+		// Activates the text box and sends along the text asset to parse.
+		textBoxScript.ActivateTextBox (dialogInteractable.GetComponent<scr_mytext_check> ().GetText ());
 	}
 
 	int CheckNearestObjectSlot(){
@@ -140,7 +159,7 @@ public class scr_player_interaction : MonoBehaviour {
 
 	// Check to see if the player entered the range of interactable objects.
 	void OnTriggerEnter(Collider col){
-		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("KeyItem".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim())){
+		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("KeyItem".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim()) || col.tag.Trim().Equals("Actor".Trim())){
 			// UI on!
 			exclamationUI.SetActive (true);
 			// Add to array of nearby interactables.
@@ -157,7 +176,7 @@ public class scr_player_interaction : MonoBehaviour {
 
 	// Check to see if the player exited the range of interactable objects.
 	void OnTriggerExit(Collider col){
-		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("KeyItem".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim())){
+		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("KeyItem".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim()) ||  col.tag.Trim().Equals("Actor".Trim())){
 			// Remove from list of nearby interactables.
 			for (int i = 0; i < nearbyInteractables.Length; i++) {
 				// Remove the interactable from the array.

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Behavior))]
+//[CustomEditor(typeof(Behavior))]
 
 public class editor_behavior_asset : Editor {
 	/*

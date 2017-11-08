@@ -102,7 +102,16 @@ public class mono_actor_manager : MonoBehaviour {
 				gameObject.SetActive (false); // Deactivate after being picked up.
 			}
 			break;
-		}
+
+		case ActorBehavior.BehaviorGoal.giveItemGoal:
+			if (gaveBehaviorItem) {
+				Debug.Log ("We had a conversation, and I gave the player the item as a part of the conversation.");
+				gaveBehaviorItem = false; // Reset this bool for the next time
+				goalComplete = true;
+			}
+
+			break;
+		} 
 	}
 		
 	void Travel(){
@@ -112,5 +121,13 @@ public class mono_actor_manager : MonoBehaviour {
 			gameObject.transform.position = myCurrentBehavior.destinationLocation;
 			traveling = false;
 		}
+	}
+
+	bool gaveBehaviorItem;
+
+	public Item GetMyBehaviorItem(){
+		// For the giveItemGoal, return items and check off that this happened.
+		gaveBehaviorItem = true;
+		return myCurrentBehavior.itemToGive;
 	}
 }
