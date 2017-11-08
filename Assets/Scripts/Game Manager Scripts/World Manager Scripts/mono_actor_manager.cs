@@ -19,11 +19,22 @@ public class mono_actor_manager : MonoBehaviour {
 	// This is messy with actors looking at each other, but it'll have to work for now.
 	public GameObject thePlayer;
 	mono_actor_zone_check playerZoneScript;
+	// If the actor is a Key Item, and uses the item script...
+	mono_item_pickup_manager itemPickupScript;
 
 	void Start(){
-		dialogScript = GetComponent<scr_mytext_check> ();
-		zoneScript = GetComponent<mono_actor_zone_check> ();
-		playerZoneScript = thePlayer.GetComponent<mono_actor_zone_check> ();
+		if (GetComponent<scr_mytext_check> () != null) {
+			dialogScript = GetComponent<scr_mytext_check> ();
+		}
+		if (GetComponent<mono_actor_zone_check> () != null) {
+			zoneScript = GetComponent<mono_actor_zone_check> ();
+		}
+		if (thePlayer != null) { // Like said above, a messy system. I'll have to remember to attach the Player to anything that might be checking to see if they're in the same zone.
+			playerZoneScript = thePlayer.GetComponent<mono_actor_zone_check> ();
+		}
+		if (GetComponent<mono_item_pickup_manager> () != null) {
+			itemPickupScript = GetComponent<mono_item_pickup_manager> ();
+		}
 	}
 
 	void Update(){
@@ -76,12 +87,21 @@ public class mono_actor_manager : MonoBehaviour {
 			break;
 		
 		case ActorBehavior.BehaviorGoal.shareZoneGoal:
-			if (playerZoneScript.myCurrentZone == zoneScript.myCurrentZone) {
+			// Make sure that the Actor is sharing a zone with the player while not traveling.
+			// The !traveling check ensures that the game doesn't trigger this twice immediately with back to back Share Zone behavior goals.
+			if (playerZoneScript.myCurrentZone == zoneScript.myCurrentZone && !traveling) {
 				Debug.Log ("Sharing zone, and the player saw me.");
 				goalComplete = true;
 			}
 			break;
 
+		case ActorBehavior.BehaviorGoal.keyItemPickup:
+			if (itemPickupScript.pickedUp) { // If it detects being picked up...
+				Debug.Log ("I, a Key Item, got picked up.");
+				goalComplete = true;
+				gameObject.SetActive (false); // Deactivate after being picked up.
+			}
+			break;
 		}
 	}
 		

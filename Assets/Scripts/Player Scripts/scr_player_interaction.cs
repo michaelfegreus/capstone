@@ -47,16 +47,13 @@ public class scr_player_interaction : MonoBehaviour {
 			// If not null, and there are nearby interactables...
 			if (currentNearestObjectIndex > -1) {
 				// If it's an item, do this:
-				if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Item".Trim ())) {
-					if (!inventoryScript.CheckFull ()) {
-						// OLD: int itemID = nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_item_ID> ().GetItemID ();
+				if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Item".Trim ()) || nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("KeyItem".Trim ())) {
+					if (!inventoryScript.CheckFull ()) { // If not full.
 						Item itemPickup = nearbyInteractables [currentNearestObjectIndex].GetComponent<mono_item_pickup_manager> ().GetItemReference ();
 						inventoryScript.AddItem (itemPickup);
-						// Get rid of object from scene if it's not a Key Item. (Key Items so far are destroyed by World Manager after recording pickup data.)
-						if (nearbyInteractables [currentNearestObjectIndex].GetComponent<mono_key_item> () != null) { // Checking to see if there is a key item script.
-							nearbyInteractables [currentNearestObjectIndex].GetComponent<mono_key_item> ().pickedUp = true; // To alert World Manager
-						} else { // Else if it's a common item, destroy it on pickup.
-							Destroy (nearbyInteractables [currentNearestObjectIndex]);
+						// Get rid of object from scene if it's not a Key Item. (Key Items so far are destroyed/deactivated by World Manager after recording pickup data.)
+						if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Item".Trim ())) { // Checking to see if it is a key item or common item
+							Destroy (nearbyInteractables [currentNearestObjectIndex]); // If it's a common item, destroy it on pickup.
 						}
 						// Remove from interactable objects array.
 						nearbyInteractables [currentNearestObjectIndex] = null;
@@ -143,7 +140,7 @@ public class scr_player_interaction : MonoBehaviour {
 
 	// Check to see if the player entered the range of interactable objects.
 	void OnTriggerEnter(Collider col){
-		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim())){
+		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("KeyItem".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim())){
 			// UI on!
 			exclamationUI.SetActive (true);
 			// Add to array of nearby interactables.
@@ -160,7 +157,7 @@ public class scr_player_interaction : MonoBehaviour {
 
 	// Check to see if the player exited the range of interactable objects.
 	void OnTriggerExit(Collider col){
-		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim())){
+		if (col.tag.Trim().Equals("Item".Trim()) || col.tag.Trim().Equals("KeyItem".Trim()) || col.tag.Trim().Equals("Dialogue".Trim()) || col.tag.Trim().Equals("Interactable".Trim())){
 			// Remove from list of nearby interactables.
 			for (int i = 0; i < nearbyInteractables.Length; i++) {
 				// Remove the interactable from the array.

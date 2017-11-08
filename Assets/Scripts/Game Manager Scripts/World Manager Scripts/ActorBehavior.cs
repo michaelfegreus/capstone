@@ -20,7 +20,7 @@ public class ActorBehavior {
 	// The goal for this Actor while performing this before (if there is a goal).
 	public enum BehaviorGoal{
 
-		noGoal, conversationGoal, shareZoneGoal
+		noGoal, conversationGoal, shareZoneGoal, keyItemPickup
 
 	}
 

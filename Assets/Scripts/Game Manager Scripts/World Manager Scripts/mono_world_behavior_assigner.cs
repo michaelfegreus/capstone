@@ -18,8 +18,8 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 	public Actor[] gameActors;
 
 	// Holds all key items, like the giant seed.
-	public GameObject[] keyItemObjects;
-	mono_key_item[] keyItemScripts;
+	/*public GameObject[] keyItemObjects;
+	mono_key_item[] keyItemScripts;*/
 
 	// Blackboard script for the World Manager.
 	mono_blackboard blackboardScript;
@@ -32,11 +32,11 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 			gameActors [s].actorScript = gameActors [s].actorGameObject.GetComponent<mono_actor_manager> ();
 		}
 		// Set every keyItemScript;
-		keyItemScripts = new mono_key_item[keyItemObjects.Length];
+		/*keyItemScripts = new mono_key_item[keyItemObjects.Length];
 		for (int i = 0; i < keyItemObjects.Length; i++) {
 			keyItemScripts [i] = keyItemObjects [i].GetComponent<mono_key_item> ();
-		}
-		CheckActorStates (); // Get the Actors set up with their Beh	aviors!
+		}*/
+		CheckActorStates (); // Get the Actors set up with their Behaviors!
 	}
 
 	void Update(){
@@ -49,9 +49,9 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 			}
 		}
 		// Check to see if any Key Items have been picked up.
-		CheckKeyItems();
+		//CheckKeyItems();
 	}
-
+	/*
 	void CheckKeyItems(){
 		// Run this to see if any key items have been picked up.
 		for (int i = 0; i < keyItemScripts.Length; i++) {
@@ -63,7 +63,7 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 				}
 			}
 		}
-	}
+	}*/
 
 	// Run ths to see how high a score a Behavior gets.
 	// Points are awarded depending on how many Fact requirements on the Behavior agree with the World Blackboard's current state of Facts.
@@ -87,8 +87,11 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 	void UpdateWorldBlackboard(Fact changingFact){
 		string factChangeKey = changingFact.factNameKey;
 		float factChangeValue = changingFact.factValue;
-		// Now find the fact in the blackboard and change it.
-		blackboardScript.worldBlackboard[factChangeKey] = factChangeValue;
+		// Now find the fact in the blackboard and change it - if there's something to change.
+		if (factChangeKey != null) {
+			blackboardScript.worldBlackboard [factChangeKey] = factChangeValue;
+			Debug.Log ("World Blackboard fact " + factChangeKey + " has been changed.");
+		}
 	}
 
 	// Run this to find out what ActorBehavior everyone should have right now.
