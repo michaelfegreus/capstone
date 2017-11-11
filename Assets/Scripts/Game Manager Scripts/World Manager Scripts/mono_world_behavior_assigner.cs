@@ -104,32 +104,36 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 			
 			currentActor = gameActors [a]; // Checking this guy currently.
 
-			// Get at least one Behavior in there to not have a null.
-			// If this throws an error at runtime, that means I have not set even one Behavior up for the Actor, which is unwanted!
-			ActorBehavior highestRankedBehavior = currentActor.actorBehaviorCollection.myActorBehaviors [0];
+			// If it hasn't been deactivated...
+			if (currentActor.actorGameObject.activeInHierarchy == true) {
 
-			// Get a baseline for what to compare other Behaviors against.
-			int highestRankValue = CheckFactRank (highestRankedBehavior);
+				// Get at least one Behavior in there to not have a null.
+				// If this throws an error at runtime, that means I have not set even one Behavior up for the Actor, which is unwanted!
+				ActorBehavior highestRankedBehavior = currentActor.actorBehaviorCollection.myActorBehaviors [0];
 
-			// For all the Behaviors held by this actor, check each one.
-			// Start at index [1] because we've already got the thing from index [0] loaded in.
-			for (int b = 1; b < currentActor.actorBehaviorCollection.myActorBehaviors.Length; b++) {
+				// Get a baseline for what to compare other Behaviors against.
+				int highestRankValue = CheckFactRank (highestRankedBehavior);
 
-				// Rank of current Behavior being checked.
-				int newRankValue = CheckFactRank(currentActor.actorBehaviorCollection.myActorBehaviors[b]);
+				// For all the Behaviors held by this actor, check each one.
+				// Start at index [1] because we've already got the thing from index [0] loaded in.
+				for (int b = 1; b < currentActor.actorBehaviorCollection.myActorBehaviors.Length; b++) {
 
-				// If it beats the current high rank's value, it becomes the new high rank!
-				if (newRankValue > highestRankValue) {
-					highestRankValue = newRankValue;
-					highestRankedBehavior = currentActor.actorBehaviorCollection.myActorBehaviors [b];
+					// Rank of current Behavior being checked.
+					int newRankValue = CheckFactRank (currentActor.actorBehaviorCollection.myActorBehaviors [b]);
+
+					// If it beats the current high rank's value, it becomes the new high rank!
+					if (newRankValue > highestRankValue) {
+						highestRankValue = newRankValue;
+						highestRankedBehavior = currentActor.actorBehaviorCollection.myActorBehaviors [b];
+					}
 				}
-			}
-			// Done checking through all of the BehaviorCollection for this Actor.
-			// Now set whatever you determined to be the winning behavior on the player
+				// Done checking through all of the BehaviorCollection for this Actor.
+				// Now set whatever you determined to be the winning behavior on the player
 
-			// **** SET WINNING BEHAVIOR HERE
-			//Debug.Log("Winning behavior name: " + highestRankedBehavior.behaviorName);
-			gameActors [a].actorScript.SetNewBehavior (highestRankedBehavior);
+				// **** SET WINNING BEHAVIOR HERE
+				//Debug.Log("Winning behavior name: " + highestRankedBehavior.behaviorName);
+				gameActors [a].actorScript.SetNewBehavior (highestRankedBehavior);
+			}
 		}
 		// Done checking through all of the Actors. Great job~!
 	}

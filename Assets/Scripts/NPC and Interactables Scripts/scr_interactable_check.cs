@@ -6,6 +6,8 @@ public class scr_interactable_check : MonoBehaviour {
 
 	public MonoBehaviour myScript;
 
+	public Item requiredItem;
+
 	// This runs the "child" component that is unique to this interactable object.
 	// i.e. a door script that is also attached to this object which opens when you interact with it
 	public void RunAction(){

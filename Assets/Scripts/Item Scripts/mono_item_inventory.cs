@@ -21,6 +21,7 @@ public class mono_item_inventory : MonoBehaviour {
 		}
 	}
 
+	// Check to see if the item inventory's slots are all taken.
 	public bool CheckFull(){
 		bool full = true; // Starts as true, but flips to false as soon as it finds an exception.
 		for (int i = 0; i < itemsHeld.Length; i++) {
@@ -30,5 +31,17 @@ public class mono_item_inventory : MonoBehaviour {
 			}
 		}
 		return full;
+	}
+
+	// Search through this inventory and see if a particular item is within it.
+	public bool CheckInventoryForItem(Item checkingItem){
+		bool hasItem = false; // Starts as true, but flips to false as soon as it finds the item.
+		for (int i = 0; i < itemsHeld.Length; i++) {
+			if (itemsHeld [i] == checkingItem) {
+				hasItem = true;
+				return hasItem;
+			}
+		}
+		return hasItem;
 	}
 }

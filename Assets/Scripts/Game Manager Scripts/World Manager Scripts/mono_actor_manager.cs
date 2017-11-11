@@ -21,6 +21,8 @@ public class mono_actor_manager : MonoBehaviour {
 	mono_actor_zone_check playerZoneScript;
 	// If the actor is a Key Item, and uses the item script...
 	mono_item_pickup_manager itemPickupScript;
+	// If it's the giant plant...
+	mono_giantplant_level plantLevelScript;
 
 	void Start(){
 		if (GetComponent<scr_mytext_check> () != null) {
@@ -33,6 +35,9 @@ public class mono_actor_manager : MonoBehaviour {
 			playerZoneScript = thePlayer.GetComponent<mono_actor_zone_check> ();
 		}
 		if (GetComponent<mono_item_pickup_manager> () != null) {
+			itemPickupScript = GetComponent<mono_item_pickup_manager> ();
+		}
+		if (GetComponent<mono_giantplant_level> () != null) {
 			itemPickupScript = GetComponent<mono_item_pickup_manager> ();
 		}
 	}
@@ -94,15 +99,16 @@ public class mono_actor_manager : MonoBehaviour {
 				goalComplete = true;
 			}
 			break;
-
+			/*
 		case ActorBehavior.BehaviorGoal.keyItemPickup:
-			if (itemPickupScript.pickedUp) { // If it detects being picked up...
+			if (gaveBehaviorItem) {
 				Debug.Log ("I, a Key Item, got picked up.");
+				gaveBehaviorItem = false; // Reset this bool for the next time
 				goalComplete = true;
 				gameObject.SetActive (false); // Deactivate after being picked up.
 			}
 			break;
-
+*/
 		case ActorBehavior.BehaviorGoal.giveItemGoal:
 			if (gaveBehaviorItem) {
 				Debug.Log ("We had a conversation, and I gave the player the item as a part of the conversation.");
@@ -110,6 +116,16 @@ public class mono_actor_manager : MonoBehaviour {
 				goalComplete = true;
 			}
 
+			break;
+
+		case ActorBehavior.BehaviorGoal.deactivateActor:
+			// DeactivateActor when you're finished using this Actor and don't want to check for updates on it further.
+			// This is the dead end of this Actor.
+			gameObject.SetActive(false);
+			break;
+		
+		case ActorBehavior.BehaviorGoal.takeItem:
+			
 			break;
 		} 
 	}

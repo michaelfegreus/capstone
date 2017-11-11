@@ -34,6 +34,8 @@ public class scr_player_interaction : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		CheckExclamationUI (); // Doing this every frame right now because I'm still working out this script.
+
 		// Interact button.
 		if (!inDialogue && Input.GetKeyDown (KeyCode.JoystickButton2) || Input.GetKeyDown (KeyCode.P) ) {
 
@@ -69,7 +71,10 @@ public class scr_player_interaction : MonoBehaviour {
 								Item itemPickup = interactingActorScript.GetMyBehaviorItem(); // Use the Get function so you can trigger a certain bool to alert tha							t the task has been completed.
 								inventoryScript.AddItem (itemPickup);
 							}
-							RunDialog (interactingActor);
+							// If it has text to share.
+							if (interactingActor.GetComponent<scr_mytext_check> () != null) {
+								RunDialog (interactingActor);
+							}
 						}
 					}
 
@@ -82,12 +87,22 @@ public class scr_player_interaction : MonoBehaviour {
 				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Interactable".Trim ())) {
 					// Make sure it has a script that allows
 					if (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_interactable_check> () != null) {
-						nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_interactable_check> ().RunAction ();
+						// Get script reference.
+						scr_interactable_check interactableScript = nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_interactable_check> ();
+						// if it doesn't have an item in inventory requirement...
+						if (interactableScript.requiredItem == null) {
+							interactableScript.RunAction ();
+						} else {
+							// If the player has the required item to interact...
+							if (inventoryScript.CheckInventoryForItem (interactableScript.requiredItem)) {
+								interactableScript.RunAction ();
+							}
+						}
 					} else {
 						Debug.Log ("This interactable doesn't have an Interactable Check script attached to it.");
 					}
 					// And if it has a dialogue script attached to it, run that too.
-					if (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> ().GetText () != null) {
+					if (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> () != null) {
 						inDialogue = true;
 						// Activates the text box and sends along the text asset to parse.
 						textBoxScript.ActivateTextBox (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> ().GetText ());
@@ -141,7 +156,12 @@ public class scr_player_interaction : MonoBehaviour {
 
 		for (int i = 0; i < nearbyInteractables.Length; i++) {
 			if (nearbyInteractables [i] != null) {
-				interactablesEmpty = false;
+				// In case the item was deactivated, but not destroyed (i.e. Key Items), take it out of the array.
+				if (nearbyInteractables [i].activeInHierarchy == false) {
+					nearbyInteractables [i] = null;
+				} else {
+					interactablesEmpty = false;
+				}
 				// UI on!
 				exclamationUI.SetActive (true);
 				return;
@@ -155,6 +175,23 @@ public class scr_player_interaction : MonoBehaviour {
 
 	public void DeactivateExclamationUI(){
 		exclamationUI.SetActive (false);
+	}
+
+	public void UseInventoryItemInteraction(Item usedItem){	// usedItem is whatever the player selected in the inventory.
+		// Check through the array of interactables objects. Interact with the closest one.
+		GameObject nearestInteractable = nearbyInteractables[CheckNearestObjectSlot()];
+		mono_actor_manager actorScript;
+		// If the nearest thing is an Actor.
+		if (nearestInteractable.tag.Trim ().Equals ("Actor".Trim ())) {
+			actorScript = nearestInteractable.GetComponent<mono_actor_manager> ();
+			// If it's looking for an item...
+			if (actorScript.myCurrentBehavior.myGoal == ActorBehavior.BehaviorGoal.takeItem) {
+				// If you've got the item the actor is looking for...
+				if (usedItem == actorScript.myCurrentBehavior.itemToTake) {
+					Debug.Log ("The Actor got the " + usedItem.itemName);
+				}
+			}
+		}
 	}
 
 	// Check to see if the player entered the range of interactable objects.

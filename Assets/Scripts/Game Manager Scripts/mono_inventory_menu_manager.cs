@@ -7,8 +7,11 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 
 	// Script for dealing with the non-diegetic inventory menu.
 	// I'm thinking this will get stuck onto the Game Manager object, rather than create a new object.
+	// IDK how generic this should be. For just the player, or for other stuff like chests, item shops, or even NPC inventories?
 
 	mono_item_inventory currentInventory;
+	[System.NonSerialized]
+	public scr_player_interaction playerInteractionScript;
 
 	int currentInventorySize;
 
@@ -20,7 +23,7 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 	scr_ui_inventory_manager inventoryUIScript;
 
 	// This keeps track of where the player's cursor is over the items.
-	int cursorIndex = 0;
+	public int cursorIndex = 0;
 	//Keeps track of whether the cursor was just moved.
 	bool cursorMove = false;
 
@@ -42,11 +45,13 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 	}
 
 	public void OpenInventoryMenu (mono_item_inventory incomingInventory){
+		
 		currentInventory = incomingInventory;
 		currentInventorySize = incomingInventory.itemsHeld.Length;
 		inItemMenu = true;
 		inventoryUI.SetActive (true);
 		UpdateMenuSlots ();
+		UpdateItemDescription();
 	}
 	public void CloseInventoryMenu (){
 		inItemMenu = false;
@@ -67,9 +72,14 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 
 	// Updates the title, description, and sprite in the Inventory Description Box
 	void UpdateItemDescription(){
-		// Pull strings from Item asset array.
-		highlightedItemText.text = currentInventory.itemsHeld[cursorIndex].itemName;
-		itemDescriptionText.text = currentInventory.itemsHeld [cursorIndex].itemDescription;
+		if (currentInventory.itemsHeld [cursorIndex] != null) {
+			// Pull strings from Item asset array.
+			highlightedItemText.text = currentInventory.itemsHeld [cursorIndex].itemName;
+			itemDescriptionText.text = currentInventory.itemsHeld [cursorIndex].itemDescription;
+		} else {
+			highlightedItemText.text = "EMPTY";
+			itemDescriptionText.text = "";
+		}
 	}
 
 	// Updates the current index of the cursor.
@@ -77,7 +87,6 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 		// Sets the Y position of the cursor sprite equal to the y position of the current UI spot of the index.
 		cursorSprite.transform.position = new Vector3(cursorSprite.transform.position.x, itemTextArray [cursorIndex].transform.position.y, cursorSprite.transform.position.z);
 		// Update the item description box to reflect the newly highlighted item.
-		UpdateItemDescription();
 	}
 
 	void Update(){
@@ -88,6 +97,10 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 		if (inItemMenu) {
 			float inputY = Input.GetAxis("Vertical");
 			// If you haven't just moved the cursor.
+			if (Input.GetKeyDown (KeyCode.JoystickButton0)) {
+				// An item has been clicked on.
+				playerInteractionScript.UseInventoryItemInteraction(currentInventory.itemsHeld[cursorIndex]);
+			}
 			if (!cursorMove) {
 				// If input down
 				if (inputY < -.5f) {
@@ -99,6 +112,8 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 					}
 					cursorMove = true;
 					inventoryUIScript.UpdateCursorIndex (cursorIndex);
+					UpdateItemDescription();
+
 				}
 				// If input up
 				if (inputY > .5f) {
@@ -110,6 +125,8 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 					}
 					cursorMove = true;
 					inventoryUIScript.UpdateCursorIndex (cursorIndex);
+					UpdateItemDescription();
+
 				}
 			} else if (inputY < .5f && inputY > -.5f) {
 				cursorMove = false;

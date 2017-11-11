@@ -18,6 +18,7 @@ public class scr_game_MANAGER : MonoBehaviour {
 		playerScript = playerObject.GetComponent<scr_player_MANAGER>();
 		textBoxScript = GetComponent<scr_ui_textbox_manager> ();
 		inventoryMenuManager = GetComponent<mono_inventory_menu_manager> ();
+		inventoryMenuManager.playerInteractionScript = playerObject.GetComponent<scr_player_interaction> ();
 	}
 	
 	// Update is called once per frame
@@ -39,6 +40,7 @@ public class scr_game_MANAGER : MonoBehaviour {
 				inventoryMenuManager.enabled = true;
 				inventoryMenuManager.OpenInventoryMenu (playerObject.GetComponent<mono_item_inventory>());
 			}
+
 		}
 
 		// If this script notices that the text box has been closed...
