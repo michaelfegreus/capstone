@@ -20,7 +20,18 @@ public class scr_game_MANAGER : MonoBehaviour {
 		inventoryMenuManager = GetComponent<mono_inventory_menu_manager> ();
 		inventoryMenuManager.playerInteractionScript = playerObject.GetComponent<scr_player_interaction> ();
 	}
-	
+
+	void OpenInventoryMenu(){
+		playerScript.StateChange (scr_player_MANAGER.State.inMenu);
+		inventoryMenuManager.enabled = true;
+		inventoryMenuManager.OpenInventoryMenu (playerObject.GetComponent<mono_item_inventory>());
+	}
+	void CloseInventoryMenu(){
+		playerScript.StateChange (scr_player_MANAGER.State.free);
+		inventoryMenuManager.enabled = false;
+		inventoryMenuManager.CloseInventoryMenu ();
+	}
+
 	// Update is called once per frame
 	void Update () {
 
@@ -30,17 +41,16 @@ public class scr_game_MANAGER : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.JoystickButton3) || Input.GetKeyDown (KeyCode.I)) {
 			// Close menu
 			if (playerScript.currentState == scr_player_MANAGER.State.inMenu) {
-				playerScript.StateChange (scr_player_MANAGER.State.free);
-				inventoryMenuManager.enabled = false;
-				inventoryMenuManager.CloseInventoryMenu ();
+				CloseInventoryMenu ();
 			}
 			// Open menu
 			else if (playerScript.currentState == scr_player_MANAGER.State.free) {
-				playerScript.StateChange (scr_player_MANAGER.State.inMenu);
-				inventoryMenuManager.enabled = true;
-				inventoryMenuManager.OpenInventoryMenu (playerObject.GetComponent<mono_item_inventory>());
+				OpenInventoryMenu ();
 			}
-
+		}
+		if (inventoryMenuManager.usedItem) {
+			CloseInventoryMenu ();
+			inventoryMenuManager.usedItem = false;
 		}
 
 		// If this script notices that the text box has been closed...

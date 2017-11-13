@@ -125,7 +125,10 @@ public class mono_actor_manager : MonoBehaviour {
 			break;
 		
 		case ActorBehavior.BehaviorGoal.takeItem:
-			
+			if (tookBehaviorItem) {
+				gaveBehaviorItem = false; // Reset this bool for the next time
+				goalComplete = true; // This is for a one-time situation -- not for when it keeps taking the item, like with the plant and spirit water.
+			}
 			break;
 		} 
 	}
@@ -139,11 +142,18 @@ public class mono_actor_manager : MonoBehaviour {
 		}
 	}
 
-	bool gaveBehaviorItem;
+	bool gaveBehaviorItem = false;
 
 	public Item GetMyBehaviorItem(){
 		// For the giveItemGoal, return items and check off that this happened.
 		gaveBehaviorItem = true;
 		return myCurrentBehavior.itemToGive;
+	}
+
+	bool tookBehaviorItem;
+
+	public void TakeMyBehaviorItem(){
+		// Fpr the takeItemGoal, the player interaction script should access this and give it to this actor.
+		tookBehaviorItem = true;
 	}
 }

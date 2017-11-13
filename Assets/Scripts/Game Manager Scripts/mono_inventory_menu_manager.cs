@@ -40,6 +40,10 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 	public Text itemDescriptionText;
 	public Image itemSprite;
 
+	// To alert when to open / close inventory based on Item Use.
+	[System.NonSerialized]
+	public bool usedItem = false;
+
 	void Start(){
 		inventoryUIScript = inventoryUI.GetComponent<scr_ui_inventory_manager> ();
 	}
@@ -89,6 +93,16 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 		// Update the item description box to reflect the newly highlighted item.
 	}
 
+	void UseItem(){
+		// An item has been selected in the menu.
+		// *** Eventually, you might also want to make a "CheckInventoryItemInteraction" for when you want to use an item, but not remove it.
+		if (playerInteractionScript.UseInventoryItemInteraction (currentInventory.itemsHeld [cursorIndex])) {
+			// Remove the inventory Item from the corresponding Inventory component if the item was used successfully.
+			currentInventory.itemsHeld[cursorIndex] = null;
+		}
+		usedItem = true;
+	}
+
 	void Update(){
 
 		// Allows you to operate the item menu when it's open
@@ -97,9 +111,8 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 		if (inItemMenu) {
 			float inputY = Input.GetAxis("Vertical");
 			// If you haven't just moved the cursor.
-			if (Input.GetKeyDown (KeyCode.JoystickButton0)) {
-				// An item has been clicked on.
-				playerInteractionScript.UseInventoryItemInteraction(currentInventory.itemsHeld[cursorIndex]);
+			if (Input.GetKeyDown (KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.Return)) {
+				UseItem ();
 			}
 			if (!cursorMove) {
 				// If input down

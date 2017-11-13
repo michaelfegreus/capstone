@@ -177,21 +177,30 @@ public class scr_player_interaction : MonoBehaviour {
 		exclamationUI.SetActive (false);
 	}
 
-	public void UseInventoryItemInteraction(Item usedItem){	// usedItem is whatever the player selected in the inventory.
+	public bool UseInventoryItemInteraction(Item usedItem){	// usedItem is whatever the player selected in the inventory.
+		bool itemWasUsed = false;
 		// Check through the array of interactables objects. Interact with the closest one.
-		GameObject nearestInteractable = nearbyInteractables[CheckNearestObjectSlot()];
-		mono_actor_manager actorScript;
-		// If the nearest thing is an Actor.
-		if (nearestInteractable.tag.Trim ().Equals ("Actor".Trim ())) {
-			actorScript = nearestInteractable.GetComponent<mono_actor_manager> ();
-			// If it's looking for an item...
-			if (actorScript.myCurrentBehavior.myGoal == ActorBehavior.BehaviorGoal.takeItem) {
-				// If you've got the item the actor is looking for...
-				if (usedItem == actorScript.myCurrentBehavior.itemToTake) {
-					Debug.Log ("The Actor got the " + usedItem.itemName);
+		if (CheckNearestObjectSlot () != -1) { // Since I've been using -1 as the response for an empty array.
+			GameObject nearestInteractable = nearbyInteractables [CheckNearestObjectSlot ()];
+			mono_actor_manager actorScript;
+			// If the nearest thing is an Actor.
+			if (nearestInteractable.tag.Trim ().Equals ("Actor".Trim ())) {
+				actorScript = nearestInteractable.GetComponent<mono_actor_manager> ();
+				// If it's looking for an item...
+				if (actorScript.myCurrentBehavior.myGoal == ActorBehavior.BehaviorGoal.takeItem) {
+					// If you've got the item the actor is looking for...
+					if (usedItem == actorScript.myCurrentBehavior.itemToTake) {
+						Debug.Log ("The Actor got the " + usedItem.itemName);
+						itemWasUsed = true;
+					} else {
+						Debug.Log ("The Actor was looking for an item, but not this item.");
+					}
 				}
 			}
+		} else {
+			Debug.Log ("No nearby Actors to use the Item on.");
 		}
+		return itemWasUsed;
 	}
 
 	// Check to see if the player entered the range of interactable objects.
