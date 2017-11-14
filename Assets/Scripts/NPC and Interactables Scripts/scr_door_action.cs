@@ -10,9 +10,12 @@ public class scr_door_action : MonoBehaviour {
 	public bool locked;
 	bool open = false;
 
+	// How long it takes until the door automatically closes itself without player input.
+
 	void Start(){
 		anim = GetComponent<Animator> ();
 		questManagerScript = GetComponent<scr_npc_MANAGER> ();
+
 	}
 
 	// Run update once upon activation to complete script's task.
@@ -32,6 +35,9 @@ public class scr_door_action : MonoBehaviour {
 			Debug.Log ("Close the door.");
 			anim.SetBool ("doorOpen", false);
 			open = false;
+		}
+		if (open) {
+
 		}
 		enabled = false;
 	}

@@ -20,12 +20,16 @@ public class ActorBehavior {
 	// Item to take or check from the player for this behavior.
 	public Item itemToTake;
 
+	//public string childStateSwitchKey; // If it's a setActiveChildPrefab goal, what does this thing transform into?
+	// *** ALTERNATIVELY, I could just have the ActorBehavior asset have a reference to the prefab, and then it just checks to see if has the right prefab...?
+	public GameObject childStateSwitch; // ^ Use this variable if done with references like said above.
+
 	public Fact[] factsRequired; // What facts must return at which values in order to run this Behavior?
 
 	// The goal for this Actor while performing this before (if there is a goal).
 	public enum BehaviorGoal{
 
-		noGoal, conversationGoal, shareZoneGoal, keyItemPickup, giveItemGoal, deactivateActor, takeItem
+		noGoal, conversationGoal, shareZoneGoal, keyItemPickup, giveItemGoal, deactivateActor, takeItem, transformActorChildState
 		// NoGoal when the Actor is waiting for the next step of things to do.
 		// DeactivateActor when you're finished using this Actor and don't want to check for updates on it further. This is the dead end of it.
 	}

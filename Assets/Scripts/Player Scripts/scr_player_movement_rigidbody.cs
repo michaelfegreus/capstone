@@ -64,9 +64,6 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 	float runningTimer = 0f;
 	float endRunTimer = 100f; // Start with high number so it doesn't trigger until ready
 
-	// Windzone for stepping on and displacing grass or other terrain elements.
-	WindZone grassStep;
-
 	scr_player_groundcheck groundcheckScript;
 
 	void Start () {
@@ -74,9 +71,6 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 		rotationSpeed = baseRotationSpeed;
 		rb = GetComponent<Rigidbody> ();
 		rb.drag = groundDrag;
-
-		grassStep = GetComponent<WindZone> ();
-		grassStep.windTurbulence = 0f;
 
 		groundcheckScript = GetComponent<scr_player_groundcheck> ();
 	}
@@ -163,8 +157,6 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			}
 		} else if (!onGround){
 			rb.drag = airDrag;
-
-			grassStep.windTurbulence = 1.75f;
 		}
 
 		DustcloudCheck ();
@@ -198,7 +190,6 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 						}
 						// Apply force to begin moving!
 						rb.AddForce (transform.forward * currentMoveSpeed, ForceMode.Impulse);
-						grassStep.windTurbulence = 1.4f;
 					}
 				}
 			}
@@ -208,7 +199,6 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 					if (moving) {
 						MovingStopCheck ();
 					}
-					grassStep.windTurbulence = 0f;
 				}
 			}
 

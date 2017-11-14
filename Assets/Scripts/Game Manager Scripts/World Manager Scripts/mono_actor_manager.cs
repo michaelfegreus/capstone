@@ -130,6 +130,24 @@ public class mono_actor_manager : MonoBehaviour {
 				goalComplete = true; // This is for a one-time situation -- not for when it keeps taking the item, like with the plant and spirit water.
 			}
 			break;
+
+		case ActorBehavior.BehaviorGoal.transformActorChildState: // Make sure to tag the children with "ActorState" when it's something this Actor can "transform" into!
+			
+			for (int c = 0; c < transform.childCount; c++) {
+				Transform currentChild = transform.GetChild (c);
+				if (currentChild.tag == "ActorState") { // Make sure it's an Actor State, and not some other chump.
+					if (currentChild.gameObject == myCurrentBehavior.childStateSwitch || currentChild.name == myCurrentBehavior.childStateSwitch.name) { // If this is the right state this Actor needs to "transform" into...
+						// Doing the ".name" function is a bit of brute force...but I can't get it working by GameObject reference yet.
+						// If this ever tanks performance or something, then we can go back to using the "mono_actor_child_switch" script solution with Dictionary lookups.
+						currentChild.gameObject.SetActive (true);
+						Debug.Log ("Yeah we have the same reference as the ActorBehavior.");
+					} else if (currentChild != myCurrentBehavior.childStateSwitch) { // But if it's an ActorState, and it's not the right one, deactivate it.
+						currentChild.gameObject.SetActive (false);
+					}
+				}
+			}
+			goalComplete = true;
+			break;
 		} 
 	}
 		
@@ -152,8 +170,9 @@ public class mono_actor_manager : MonoBehaviour {
 
 	bool tookBehaviorItem;
 
-	public void TakeMyBehaviorItem(){
-		// Fpr the takeItemGoal, the player interaction script should access this and give it to this actor.
+	public Item TakeMyBehaviorItem(){
+		// For the takeItemGoal, the player interaction script should access this and give it to this actor.
 		tookBehaviorItem = true;
+		return myCurrentBehavior.itemToTake;
 	}
 }

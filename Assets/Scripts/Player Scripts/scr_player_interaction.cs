@@ -61,6 +61,19 @@ public class scr_player_interaction : MonoBehaviour {
 				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Actor".Trim ())) {
 					// Get that actor's info
 					GameObject interactingActor = nearbyInteractables [currentNearestObjectIndex];
+					/*
+					RaycastHit hit;
+
+					BoxCollider box = interactingActor.GetComponent<BoxCollider> ();
+
+					Vector3 localPoint = hit.transform.InverseTransformPoint (hit.point);
+					Vector3 localDir = localPoint.normalized;
+
+					float upDot = Vector3.Dot (localDir, Vector3.up);
+					float fwdDot = Vector3.Dot (localDir, Vector3.forward);
+					folo
+					*/
+
 					mono_actor_manager interactingActorScript = interactingActor.GetComponent<mono_actor_manager> ();
 					if(interactingActorScript.myCurrentBehavior!=null){
 						// Get that actor's current ActorBehavior
@@ -189,12 +202,14 @@ public class scr_player_interaction : MonoBehaviour {
 				// If it's looking for an item...
 				if (actorScript.myCurrentBehavior.myGoal == ActorBehavior.BehaviorGoal.takeItem) {
 					// If you've got the item the actor is looking for...
-					if (usedItem == actorScript.myCurrentBehavior.itemToTake) {
-						Debug.Log ("The Actor got the " + usedItem.itemName);
+					if (usedItem == actorScript.TakeMyBehaviorItem()) {
+						Debug.Log ("I gave the Actor the " + usedItem.itemName);
 						itemWasUsed = true;
 					} else {
 						Debug.Log ("The Actor was looking for an item, but not this item.");
 					}
+				} else if (actorScript.myCurrentBehavior.myGoal == ActorBehavior.BehaviorGoal.takeItem) {
+					Debug.Log ("The Actor is not currently looking to take an item.");
 				}
 			}
 		} else {
