@@ -64,6 +64,11 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 	float runningTimer = 0f;
 	float endRunTimer = 100f; // Start with high number so it doesn't trigger until ready
 
+	//
+	public Transform mainCamera; // To get the positioning of the camera when the player should move based on the camera's angle. 
+	[System.NonSerialized]
+	public bool camBasedMovement = true; // Default to on.
+
 	scr_player_groundcheck groundcheckScript;
 
 	void Start () {
@@ -131,6 +136,11 @@ public class scr_player_movement_rigidbody : MonoBehaviour {
 			rb.drag = groundDrag;
 
 			movement = new Vector3 (inputX, 0.0f, inputY);
+			// Here's to change it to be based on the camera's position.
+			if (camBasedMovement) {
+				movement = mainCamera.TransformDirection (movement);
+				movement.y = 0f;
+			}
 			desiredRotation = Quaternion.LookRotation (movement); // Get the desired rotation.
 
 			// Checks to see if, while walking/running, the player has dramatically changed the direction of desired movement vs. the current rotation.

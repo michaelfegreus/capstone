@@ -12,7 +12,7 @@ public class mono_actor_manager : MonoBehaviour {
 	bool traveling;
 
 	// Dialog script to check if the player has talked to this object.
-	scr_mytext_check dialogScript;
+	scr_mytext_check dialogTextScript;
 
 	// For checking to see if their zones match.
 	mono_actor_zone_check zoneScript;
@@ -26,7 +26,7 @@ public class mono_actor_manager : MonoBehaviour {
 
 	void Start(){
 		if (GetComponent<scr_mytext_check> () != null) {
-			dialogScript = GetComponent<scr_mytext_check> ();
+			dialogTextScript = GetComponent<scr_mytext_check> ();
 		}
 		if (GetComponent<mono_actor_zone_check> () != null) {
 			zoneScript = GetComponent<mono_actor_zone_check> ();
@@ -38,7 +38,7 @@ public class mono_actor_manager : MonoBehaviour {
 			itemPickupScript = GetComponent<mono_item_pickup_manager> ();
 		}
 		if (GetComponent<mono_giantplant_level> () != null) {
-			itemPickupScript = GetComponent<mono_item_pickup_manager> ();
+			plantLevelScript = GetComponent<mono_giantplant_level> ();
 		}
 	}
 
@@ -69,6 +69,10 @@ public class mono_actor_manager : MonoBehaviour {
 		} else {
 			traveling = false;
 		}
+		// Give current behavior's Text, if there is one.
+		if (myCurrentBehavior.behaviorDialogText != null) {
+			dialogTextScript.myText = myCurrentBehavior.behaviorDialogText;
+		}
 
 	}
 
@@ -85,7 +89,7 @@ public class mono_actor_manager : MonoBehaviour {
 		switch (myCurrentBehavior.myGoal) {
 
 		case ActorBehavior.BehaviorGoal.conversationGoal:
-			if (dialogScript.myTextBeingAccessed) {
+			if (dialogTextScript.myTextBeingAccessed) {
 				Debug.Log ("We had a conversation.");
 				goalComplete = true;
 			}
@@ -170,9 +174,11 @@ public class mono_actor_manager : MonoBehaviour {
 
 	bool tookBehaviorItem;
 
-	public Item TakeMyBehaviorItem(){
+	public bool TakeMyBehaviorItem(Item playerItem){
 		// For the takeItemGoal, the player interaction script should access this and give it to this actor.
-		tookBehaviorItem = true;
-		return myCurrentBehavior.itemToTake;
+		if (playerItem == myCurrentBehavior.itemToTake) {
+			tookBehaviorItem = true;
+		}
+		return tookBehaviorItem;
 	}
 }

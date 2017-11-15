@@ -9,10 +9,13 @@ public class scr_virtualcamera_zone : MonoBehaviour {
 	public CinemachineBrain mainCamBrain;
 
 	public Zone thisZone;
+	// If the player shouldn't move based on the camera in this area, turn this off.
+	public bool camBasedMovementZone = true; // Default to true.
 
 	void OnTriggerEnter (Collider col) {
 		if (col.tag == ("Player")) {
 			SwapCameras ();
+			col.gameObject.GetComponent<scr_player_movement_rigidbody> ().camBasedMovement = camBasedMovementZone;
 		}
 		if (col.tag == ("Player") || col.tag == ("Actor")) {
 			col.gameObject.GetComponent<mono_actor_zone_check> ().myCurrentZone = thisZone;

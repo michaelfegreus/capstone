@@ -61,20 +61,8 @@ public class scr_player_interaction : MonoBehaviour {
 				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Actor".Trim ())) {
 					// Get that actor's info
 					GameObject interactingActor = nearbyInteractables [currentNearestObjectIndex];
-					/*
-					RaycastHit hit;
-
-					BoxCollider box = interactingActor.GetComponent<BoxCollider> ();
-
-					Vector3 localPoint = hit.transform.InverseTransformPoint (hit.point);
-					Vector3 localDir = localPoint.normalized;
-
-					float upDot = Vector3.Dot (localDir, Vector3.up);
-					float fwdDot = Vector3.Dot (localDir, Vector3.forward);
-					folo
-					*/
-
 					mono_actor_manager interactingActorScript = interactingActor.GetComponent<mono_actor_manager> ();
+
 					if(interactingActorScript.myCurrentBehavior!=null){
 						// Get that actor's current ActorBehavior
 						ActorBehavior interactingActorBehavior = interactingActorScript.myCurrentBehavior;
@@ -84,17 +72,18 @@ public class scr_player_interaction : MonoBehaviour {
 								Item itemPickup = interactingActorScript.GetMyBehaviorItem(); // Use the Get function so you can trigger a certain bool to alert tha							t the task has been completed.
 								inventoryScript.AddItem (itemPickup);
 							}
-							// If it has text to share.
-							if (interactingActor.GetComponent<scr_mytext_check> () != null) {
-								RunDialog (interactingActor);
-							}
+
 						}
+					}
+					// If it has text to share.
+					if (interactingActor.GetComponent<scr_mytext_check> () != null) {
+						RunDialog (interactingActor.GetComponent<scr_mytext_check> ().GetText ());
 					}
 
 				}
 				// And if it's a character or signboard, do this.
 				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Dialogue".Trim ())) {
-					RunDialog (nearbyInteractables [currentNearestObjectIndex]);
+					RunDialog (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> ().GetText ());
 				}
 				// And if it's something that reacts upon interaction, like a door, do this.
 				else if (nearbyInteractables [currentNearestObjectIndex].tag.Trim ().Equals ("Interactable".Trim ())) {
@@ -109,17 +98,22 @@ public class scr_player_interaction : MonoBehaviour {
 							// If the player has the required item to interact...
 							if (inventoryScript.CheckInventoryForItem (interactableScript.requiredItem)) {
 								interactableScript.RunAction ();
+							} else {
+							// If the player doesn not have the right Item, give a message.
+								if (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> () != null) {
+									RunDialog (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> ().GetText ());
+								}
 							}
 						}
 					} else {
 						Debug.Log ("This interactable doesn't have an Interactable Check script attached to it.");
 					}
 					// And if it has a dialogue script attached to it, run that too.
-					if (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> () != null) {
+					/*if (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> () != null) {
 						inDialogue = true;
 						// Activates the text box and sends along the text asset to parse.
 						textBoxScript.ActivateTextBox (nearbyInteractables [currentNearestObjectIndex].GetComponent<scr_mytext_check> ().GetText ());
-					}
+					}*/
 				}
 			}
 		}
@@ -133,10 +127,10 @@ public class scr_player_interaction : MonoBehaviour {
 		CheckExclamationUI ();
 	}
 
-	void RunDialog(GameObject dialogInteractable){
+	public void RunDialog(TextAsset textToRead){
 		inDialogue = true;
 		// Activates the text box and sends along the text asset to parse.
-		textBoxScript.ActivateTextBox (dialogInteractable.GetComponent<scr_mytext_check> ().GetText ());
+		textBoxScript.ActivateTextBox(textToRead);
 	}
 
 	int CheckNearestObjectSlot(){
@@ -202,7 +196,7 @@ public class scr_player_interaction : MonoBehaviour {
 				// If it's looking for an item...
 				if (actorScript.myCurrentBehavior.myGoal == ActorBehavior.BehaviorGoal.takeItem) {
 					// If you've got the item the actor is looking for...
-					if (usedItem == actorScript.TakeMyBehaviorItem()) {
+					if (actorScript.TakeMyBehaviorItem(usedItem)) {
 						Debug.Log ("I gave the Actor the " + usedItem.itemName);
 						itemWasUsed = true;
 					} else {

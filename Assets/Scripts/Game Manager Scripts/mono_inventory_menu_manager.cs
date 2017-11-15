@@ -98,7 +98,9 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 		// *** Eventually, you might also want to make a "CheckInventoryItemInteraction" for when you want to use an item, but not remove it.
 		if (playerInteractionScript.UseInventoryItemInteraction (currentInventory.itemsHeld [cursorIndex])) {
 			// Remove the inventory Item from the corresponding Inventory component if the item was used successfully.
-			currentInventory.itemsHeld[cursorIndex] = null;
+			currentInventory.itemsHeld [cursorIndex] = null;
+		} else if (currentInventory.itemsHeld [cursorIndex].useAnywhereReaction) { // **** This was me trying to the game to read the Text prompts for when you used an item somewhere else.
+			playerInteractionScript.RunDialog (currentInventory.itemsHeld [cursorIndex].useAnywhereText);
 		}
 		usedItem = true;
 	}

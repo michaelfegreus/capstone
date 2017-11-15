@@ -26,6 +26,8 @@ public class ActorBehavior {
 
 	public Fact[] factsRequired; // What facts must return at which values in order to run this Behavior?
 
+	public TextAsset behaviorDialogText; // This might not be the best overall way to do it, since you won't always want things to say the same things on a behavior, but for now, the Actor can load its scr_mytext_check with this.
+
 	// The goal for this Actor while performing this before (if there is a goal).
 	public enum BehaviorGoal{
 
