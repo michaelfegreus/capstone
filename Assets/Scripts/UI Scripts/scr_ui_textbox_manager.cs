@@ -51,14 +51,14 @@ public class scr_ui_textbox_manager : MonoBehaviour {
 		if (textBoxActive) {
 			onscreenText.text = textLines [currentLine];
 			if (bufferInput == true) {
-				if (Input.GetKeyDown (KeyCode.Return) || Input.GetKeyDown (KeyCode.JoystickButton0) || Input.GetKeyDown (KeyCode.JoystickButton2)) {
+				if (Input.GetButtonDown("Joystick0") || Input.GetButtonDown("Joystick1") || Input.GetButtonDown("Joystick2")) {
 					
 					currentLine += 1;
 					
 				}
 			}
 			else{
-				if (Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.JoystickButton0) || Input.GetKeyUp (KeyCode.JoystickButton2)) {
+				if (Input.GetButtonUp ("Joystick0") || Input.GetButtonUp ("Joystick1") || Input.GetButtonUp ("Joystick2")) {
 					bufferInput = true;
 				}
 			}

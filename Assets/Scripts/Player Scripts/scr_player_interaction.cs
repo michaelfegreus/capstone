@@ -37,7 +37,7 @@ public class scr_player_interaction : MonoBehaviour {
 		CheckExclamationUI (); // Doing this every frame right now because I'm still working out this script.
 
 		// Interact button.
-		if (!inDialogue && Input.GetKeyDown (KeyCode.JoystickButton2) || Input.GetKeyDown (KeyCode.P) ) {
+		if (!inDialogue && Input.GetButtonDown("Joystick2") ) {
 
 			// Check through the array of interactables objects. Interact with the closest one.
 			int currentNearestObjectIndex = CheckNearestObjectSlot();

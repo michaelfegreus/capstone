@@ -113,7 +113,7 @@ public class mono_inventory_menu_manager : MonoBehaviour {
 		if (inItemMenu) {
 			float inputY = Input.GetAxis("Vertical");
 			// If you haven't just moved the cursor.
-			if (Input.GetKeyDown (KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.Return)) {
+			if (Input.GetButtonDown("Joystick0") || Input.GetButtonDown("Joystick2")) {
 				UseItem ();
 			}
 			if (!cursorMove) {
