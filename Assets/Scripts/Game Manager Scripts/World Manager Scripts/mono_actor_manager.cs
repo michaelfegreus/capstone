@@ -158,7 +158,12 @@ public class mono_actor_manager : MonoBehaviour {
 	void Travel(){
 		// Get the Actor to the desired location.
 		// Right now, we're warping the actor when the player moves off from being in the same screen.
-		if (playerZoneScript.myCurrentZone != zoneScript.myCurrentZone) {
+		if (zoneScript != null) {
+			if (playerZoneScript.myCurrentZone != zoneScript.myCurrentZone) {
+				gameObject.transform.position = myCurrentBehavior.destinationLocation;
+				traveling = false;
+			}
+		} else { // If this doesn't have a zone check script, just warp it immediately.
 			gameObject.transform.position = myCurrentBehavior.destinationLocation;
 			traveling = false;
 		}
