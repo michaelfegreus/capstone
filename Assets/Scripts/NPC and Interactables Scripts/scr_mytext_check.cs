@@ -9,6 +9,7 @@ public class scr_mytext_check : MonoBehaviour {
 
 	public void SetText(TextAsset newText){
 		myText = newText;
+		myTextBeingAccessed = false;
 	}
 
 	public TextAsset GetText(){

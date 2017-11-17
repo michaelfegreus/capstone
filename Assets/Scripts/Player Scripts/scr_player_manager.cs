@@ -8,6 +8,8 @@ public class scr_player_MANAGER : MonoBehaviour {
 	scr_player_movement_rigidbody movementScript;
 	scr_player_interaction interactionScript;
 	scr_player_inventory inventoryScript;
+	public GameObject characterRig;
+	scr_rig_controller rigScript;
 
 	public State currentState;
 
@@ -15,6 +17,7 @@ public class scr_player_MANAGER : MonoBehaviour {
 		movementScript = GetComponent<scr_player_movement_rigidbody> ();
 		interactionScript = GetComponent<scr_player_interaction> ();
 		inventoryScript = GetComponent<scr_player_inventory> ();
+		rigScript = characterRig.GetComponent<scr_rig_controller> ();
 
 		currentState = State.free;
 	}
@@ -49,6 +52,7 @@ public class scr_player_MANAGER : MonoBehaviour {
 			//Debug.Log ("Current player state: Free");
 			movementScript.enabled = true;
 			interactionScript.enabled = true;
+			rigScript.enabled = true;
 			break;
 
 		case State.inAir:
@@ -62,12 +66,16 @@ public class scr_player_MANAGER : MonoBehaviour {
 			movementScript.ResetMovementValues ();
 			movementScript.enabled = false;
 			interactionScript.enabled = false;
+			rigScript.ResetAnimation ();
+			rigScript.enabled = false;
 			break;
 
 		case State.inDialogue:
 			//Debug.Log ("Current player state: In Dialogue");
 			movementScript.ResetMovementValues ();
 			movementScript.enabled = false;
+			rigScript.ResetAnimation ();
+			rigScript.enabled = false;
 			break;
 
 		}

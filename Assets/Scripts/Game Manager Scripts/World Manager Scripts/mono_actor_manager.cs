@@ -72,6 +72,7 @@ public class mono_actor_manager : MonoBehaviour {
 		// Give current behavior's Text, if there is one.
 		if (myCurrentBehavior.behaviorDialogText != null) {
 			dialogTextScript.myText = myCurrentBehavior.behaviorDialogText;
+			dialogTextScript.myTextBeingAccessed = false;
 		}
 
 	}
@@ -91,6 +92,7 @@ public class mono_actor_manager : MonoBehaviour {
 		case ActorBehavior.BehaviorGoal.conversationGoal:
 			if (dialogTextScript.myTextBeingAccessed) {
 				Debug.Log ("We had a conversation.");
+				dialogTextScript.myTextBeingAccessed = false; // Reset this bool for the next time.
 				goalComplete = true;
 			}
 			break;
@@ -130,7 +132,7 @@ public class mono_actor_manager : MonoBehaviour {
 		
 		case ActorBehavior.BehaviorGoal.takeItem:
 			if (tookBehaviorItem) {
-				gaveBehaviorItem = false; // Reset this bool for the next time
+				tookBehaviorItem = false; // Reset this bool for the next time
 				goalComplete = true; // This is for a one-time situation -- not for when it keeps taking the item, like with the plant and spirit water.
 			}
 			break;
@@ -177,7 +179,7 @@ public class mono_actor_manager : MonoBehaviour {
 		return myCurrentBehavior.itemToGive;
 	}
 
-	bool tookBehaviorItem;
+	bool tookBehaviorItem = false;
 
 	public bool TakeMyBehaviorItem(Item playerItem){
 		// For the takeItemGoal, the player interaction script should access this and give it to this actor.

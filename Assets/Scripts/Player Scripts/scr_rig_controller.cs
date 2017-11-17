@@ -48,4 +48,9 @@ public class scr_rig_controller : MonoBehaviour {
 		//anim.SetFloat("inputX", Input.GetAxis ("Horizontal"));
 		//anim.SetFloat("inputY", Input.GetAxis ("Vertical"));
 	}
+
+	public void ResetAnimation(){
+		anim.SetBool ("moving", false);
+		anim.SetBool ("running", false);
+	}
 }

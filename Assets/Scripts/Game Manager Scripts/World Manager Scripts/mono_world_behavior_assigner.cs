@@ -78,6 +78,10 @@ public class mono_world_behavior_assigner : MonoBehaviour {
 
 			if (blackboardScript.worldBlackboard [reqFact] == reqValue) {
 				rankScore++; // Add to the rankScore if a fact matches.
+			} else {
+				// If a fact doesn't match, kill this behavior
+				// Gonna need a more elegant solution in the future tho
+				rankScore -= 100;
 			}
 		}
 
